@@ -6,15 +6,13 @@ dotenv.config();
 
 const app: Express = express();
 
+const port = process.env.PORT || 8000;
+
 app.use(express.json());
 app.use(cors());
 
 app.get('/', (req: Request, res: Response) => {
-res.send('<h1>TEST</h1>')
+    res.send('<h1>TEST</h1>');
 });
 
-const port = process.env.PORT || 8000;
-
-app.listen(port, () => {
-console.log(`listening on port ${port}`)
-});
+app.listen(port, () => console.log(`listening on port ${port}`));

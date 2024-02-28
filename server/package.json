@@ -2,7 +2,7 @@
   "name": "petfinder",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "build": "npx tsc",
     "start": "node build/index.js",
