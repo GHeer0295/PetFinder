@@ -251,3 +251,42 @@ export const conversationMessageRelations = relations(conversationMessages, ({ o
         references: [conversations.convoId]
     })
 }));
+
+export type User = typeof users.$inferSelect
+export type CreateUser = typeof users.$inferInsert
+
+export type Pet = typeof pets.$inferSelect
+export type CreatePet = typeof pets.$inferInsert
+
+export type Species = typeof species.$inferSelect
+export type CreateSpecies = typeof species.$inferInsert
+
+export type AdoptionPost = typeof adoptionPosts.$inferSelect
+export type CreateAdoptionPost = typeof adoptionPosts.$inferInsert
+
+export type AdoptionRequest = typeof adoptionRequests.$inferSelect
+export type CreateAdoptionRequest = typeof adoptionRequests.$inferInsert
+
+export type PostReview = typeof postReviews.$inferSelect
+export type CreatePostReview = typeof postReviews.$inferInsert
+
+export type PostInterest = typeof postInterests.$inferSelect
+export type CreatePostInterest = typeof postInterests.$inferInsert
+
+export type PostReject = typeof postRejects.$inferSelect
+export type CreatePostReject = typeof postRejects.$inferInsert
+
+export type PostFavourite = typeof postFavourites.$inferSelect
+export type CreatePostFavourite = typeof postFavourites.$inferInsert
+
+export type Tag = typeof tags.$inferSelect
+export type CreateTag = typeof tags.$inferInsert
+
+export type PostTag = typeof postTags.$inferSelect
+export type CreatePostTag = typeof postTags.$inferInsert
+
+export type Conversation = typeof conversations.$inferSelect
+export type CreateConversation = typeof conversations.$inferInsert
+
+export type ConversationMessage = typeof conversationMessages.$inferSelect
+export type CreateConversationMessage = typeof conversationMessages.$inferInsert
