@@ -7,13 +7,13 @@ const getDbConfigOrThrow = (key: keyof typeof process.env): string => {
     const config = process.env[key];
     if(config) return config;
 
-    console.error(`Missing configuration for ${key} in process.env`);
+    console.error(`Error: Missing configuration for ${key} in process.env`);
     process.exit(1);
 };
 
 const dbPort = parseInt(getDbConfigOrThrow('DB_PORT'));
 if(isNaN(dbPort)) {
-    console.error('DB_PORT must be a number');
+    console.error('Error: DB_PORT must be a number');
     process.exit(1);
 }
 
