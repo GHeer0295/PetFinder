@@ -26,6 +26,12 @@ export const users = pgTable('users', {
     createdAt: pgTimestamp()
 });
 
+export const accounts = pgTable('account', {
+    uid: uuid('uid').primaryKey().defaultRandom(),
+    username: varchar('username', { length: 256 }).notNull(),
+    password: varchar('password', { length: 256 }).notNull()
+})
+
 export const userRelations = relations(users, ({ many }) => ({
     pets: many(pets),
     adoptionPosts: many(adoptionPosts),
