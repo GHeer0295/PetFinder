@@ -7,7 +7,6 @@
     "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
-
     "migrate:generate": "drizzle-kit generate:pg --out ./drizzle --schema ./src/Database/Schema.ts",
     "migrate:push": "node -r esbuild-register ./src/Database/Migrate.ts ./drizzle",
     "migrate": "npm run migrate:generate && npm run migrate:push"
@@ -16,7 +15,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/connect-redis": "^0.0.23",
     "@types/express-session": "^1.18.0",
+    "connect-redis": "^7.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.29.5",
