@@ -25,14 +25,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
-const RedisStore = connectRedis(session)
+// const RedisStore = connectRedis(session)
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
     name: 'nsession',
-    store: new RedisStore({
-        host: "localhost",
-        port: 6379
-    }),
+    // store: new RedisStore({
+    //     host: "localhost",
+    //     port: 6379
+    // }),
     secret: session_key,
     resave: false,
     saveUninitialized: false,
