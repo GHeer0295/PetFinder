@@ -15,18 +15,19 @@ export const login = async (req: SessionRequest, res: Response, next: NextFuncti
         let result = await db.select().from(accounts).where(eq(accounts.username, username))
         if (!result) {
             res.status(401).json({error: "User not found"})
-            res.redirect('/login')
+            // res.redirect('/login')
             next()
         }
 
         const passwordMatch = await bcrypt.compare(password, result[0].password);
         if (passwordMatch){
             req.session.user = {userId: result[0].uid}
+            res.status(200).send("Login success!")
         }
 
         else {
             res.status(401).json({error: "Wrong password"})
-            res.redirect('/login')
+            // res.redirect('/login')
             next()
         }
     }
@@ -43,13 +44,15 @@ export const register = async (req: SessionRequest, res: Response, next: NextFun
         const user = { username, password: hashedPassword };
         let result = await db.insert(accounts).values([user]);
         res.status(200).send(result)
+        next()
      }
     catch(e) {
          res.status(400).send(e)
+         next()
     } 
 }
 
 export const logout = async (req: SessionRequest, res: Response, next: NextFunction) => {
     req.session.destroy()
-    res.redirect('/login')
+    res.status(200).send("Logout success!")
 }

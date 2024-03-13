@@ -19,7 +19,7 @@ const io: socketIO.Server = new socketIO.Server();
 io.attach(server);
 
 const port = process.env.PORT || 8000;
-const session_key = process.env.SECRET_KEY || 'secret'
+const session_key = process.env.SECRET_KEY || 'secret_sauce'
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -46,7 +46,7 @@ app.use('/api/auth', authRouter)
 
 server.listen(port, () => {
     try {
-        Database.connect();
+        //Database.connect();
         console.log("LISTENING ON PORT " + port)
     } catch(error) {
         console.error(`Error: ${error}. while turning on server and connecting to database`);
