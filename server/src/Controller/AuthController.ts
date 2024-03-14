@@ -7,7 +7,7 @@ import { eq } from 'drizzle-orm';
 
 interface SessionRequest extends Request {
     session: any;
-  }
+}
 
 export const login = async (req: SessionRequest, res: Response, next: NextFunction) => {
     try {
@@ -15,7 +15,6 @@ export const login = async (req: SessionRequest, res: Response, next: NextFuncti
         let result = await db.select().from(accounts).where(eq(accounts.username, username))
         if (!result) {
             res.status(401).json({error: "User not found"})
-            // res.redirect('/login')
             next()
         }
 
@@ -27,7 +26,6 @@ export const login = async (req: SessionRequest, res: Response, next: NextFuncti
 
         else {
             res.status(401).json({error: "Wrong password"})
-            // res.redirect('/login')
             next()
         }
     }
@@ -56,3 +54,14 @@ export const logout = async (req: SessionRequest, res: Response, next: NextFunct
     req.session.destroy()
     res.status(200).send("Logout success!")
 }
+
+export const isLoggedIn = async (req: SessionRequest, res: Response, next: NextFunction) => {
+    if(req.session.user){
+        next()
+    }
+    else {
+        res.status(403).send("User not authenticated")
+    }
+}
+
+
