@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { Form } from "react-router-dom";
 import './Login.css'
 
 
@@ -8,7 +9,7 @@ const Login: React.FC = () => {
 
     return (
         <div className='flex justify-center'>
-            <form>
+            <Form action='login'>
                 <div>
                     <label>Username:
                         <input 
@@ -21,11 +22,12 @@ const Login: React.FC = () => {
                     <label>Password:
                         <input 
                             type="text"
-                            value={username}
+                            value={password}
                             onChange={(e) => setPassword(e.target.value)} />
                     </label>
                 </div>
-            </form>
+                <button type='submit'>Login</button>
+            </Form>
         </div>
     );
 }
