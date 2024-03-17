@@ -19,6 +19,7 @@ const pgTimestamp = () => timestamp('createdAt', { mode: 'date', withTimezone: t
 
 export const users = pgTable('users', {
     uid: uuid('uid').primaryKey().defaultRandom(),
+    auth_id: uuid('ownerId').notNull().references(() => accounts.uid, cascadeAction),
     email: varchar('email', { length: 256 }).unique().notNull(),
     firstName: varchar('firstName', { length: 256 }).notNull(),
     lastName: varchar('lastName', { length: 256 }).notNull(),
