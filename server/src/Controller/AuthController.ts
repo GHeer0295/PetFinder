@@ -22,7 +22,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
         const passwordMatch = await bcrypt.compare(password, result[0].password);
         if (passwordMatch){
-            req.session.user = result[0].uid
+            req.session.user = result[0].authId
             res.status(200).send("Login success!")
         }
 

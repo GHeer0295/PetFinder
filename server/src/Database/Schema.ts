@@ -19,7 +19,7 @@ const pgTimestamp = () => timestamp('createdAt', { mode: 'date', withTimezone: t
 
 export const users = pgTable('users', {
     uid: uuid('uid').primaryKey().defaultRandom(),
-    auth_id: uuid('ownerId').notNull().references(() => accounts.uid, cascadeAction),
+    authId: uuid('ownerId').notNull().references(() => accounts.authId, cascadeAction),
     email: varchar('email', { length: 256 }).unique().notNull(),
     firstName: varchar('firstName', { length: 256 }).notNull(),
     lastName: varchar('lastName', { length: 256 }).notNull(),
@@ -28,7 +28,7 @@ export const users = pgTable('users', {
 });
 
 export const accounts = pgTable('account', {
-    uid: uuid('uid').primaryKey().defaultRandom(),
+    authId: uuid('uid').primaryKey().defaultRandom(),
     username: varchar('username', { length: 256 }).notNull(),
     password: varchar('password', { length: 256 }).notNull()
 })
