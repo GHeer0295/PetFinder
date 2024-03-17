@@ -8,18 +8,18 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState<string>('');
 
     return (
-        <div className='flex justify-center'>
+        <div className='flex justify-center items-center h-screen'>
             <Form action='login'>
-                <div>
-                    <label>Username:
+                <div className='mb-2'>
+                    <label>Username: 
                         <input 
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)} />
                     </label>
                 </div>
-                <div>
-                    <label>Password:
+                <div className='mb-2'>
+                    <label>Password: 
                         <input 
                             type="text"
                             value={password}
