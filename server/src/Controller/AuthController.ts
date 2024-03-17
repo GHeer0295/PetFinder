@@ -15,25 +15,24 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     try {
         const {username, password} = req.body
         let result = await db.select().from(accounts).where(eq(accounts.username, username))
-        if (!result) {
-            res.status(401).json({error: "User not found"})
-            next()
+        if (result.length == 0) {
+            return res.status(401).json({error: "User not found"})
         }
 
         const passwordMatch = await bcrypt.compare(password, result[0].password);
         if (passwordMatch){
             req.session.user = result[0].authId
             res.status(200).send("Login success!")
+            next()
         }
 
         else {
-            res.status(401).json({error: "Wrong password"})
-            next()
+            return res.status(401).json({error: "Wrong password"})
         }
+
     }
     catch(e) {
-        res.status(400).send(e)
-        next()
+        return res.status(400).send(e)
     }
 }
 
@@ -47,8 +46,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
         next()
      }
     catch(e) {
-         res.status(400).send(e)
-         next()
+         return res.status(400).send(e)
     } 
 }
 
@@ -59,7 +57,8 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
             return res.status(500).send({error: 'Logout failed'});
         }
 
-        return res.status(200).send("Logout success!")
+        res.status(200).send("Logout success!")
+        next()
     })
 }
 
@@ -68,7 +67,7 @@ export const isLoggedIn = async (req: Request, res: Response, next: NextFunction
         next()
     }
     else {
-        res.status(403).send("User not authenticated")
+        return res.status(403).send("User not authenticated")
     }
 }
 
