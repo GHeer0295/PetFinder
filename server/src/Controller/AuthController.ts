@@ -1,15 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
-import  session from 'express-session'
+import { Session } from 'express-session'
 import { db } from "../Database/Database";
 import bcrypt from 'bcrypt'
 import { accounts } from '../Database/Schema'
 import { eq } from 'drizzle-orm';
 
-interface SessionRequest extends Request {
-    session: any;
+declare module 'express-session' {
+    interface SessionData {
+      user: string;
+    }
 }
 
-export const login = async (req: SessionRequest, res: Response, next: NextFunction) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const {username, password} = req.body
         let result = await db.select().from(accounts).where(eq(accounts.username, username))
@@ -20,7 +22,7 @@ export const login = async (req: SessionRequest, res: Response, next: NextFuncti
 
         const passwordMatch = await bcrypt.compare(password, result[0].password);
         if (passwordMatch){
-            req.session.user = {userId: result[0].uid}
+            req.session.user = result[0].uid
             res.status(200).send("Login success!")
         }
 
@@ -35,7 +37,7 @@ export const login = async (req: SessionRequest, res: Response, next: NextFuncti
     }
 }
 
-export const register = async (req: SessionRequest, res: Response, next: NextFunction) => {
+export const register = async (req: Request, res: Response, next: NextFunction) => {
     try {
         let {username, password} = req.body
         const hashedPassword = await bcrypt.hash(password, 10); 
@@ -50,13 +52,19 @@ export const register = async (req: SessionRequest, res: Response, next: NextFun
     } 
 }
 
-export const logout = async (req: SessionRequest, res: Response, next: NextFunction) => {
-    req.session.destroy()
-    res.status(200).send("Logout success!")
+export const logout = async (req: Request, res: Response, next: NextFunction) => {
+    req.session.destroy((err: any) => {
+        if (err) {
+            console.log("Error: Failed to logout:", err)
+            return res.status(500).send({error: 'Logout failed'});
+        }
+
+        return res.status(200).send("Logout success!")
+    })
 }
 
-export const isLoggedIn = async (req: SessionRequest, res: Response, next: NextFunction) => {
-    if(req.session.user){
+export const isLoggedIn = async (req: Request, res: Response, next: NextFunction) => {
+    if (req.session.user) {
         next()
     }
     else {
