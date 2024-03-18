@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { Session } from 'express-session'
 import { db } from "../Database/Database";
 import bcrypt from 'bcrypt'
-import { accounts } from '../Database/Schema'
+import { accounts, users } from '../Database/Schema'
 import { eq } from 'drizzle-orm';
 
 declare module 'express-session' {
@@ -40,9 +39,15 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     try {
         let {username, password} = req.body
         const hashedPassword = await bcrypt.hash(password, 10); 
-        const user = { username, password: hashedPassword };
-        let result = await db.insert(accounts).values([user]);
-        res.status(200).send(result)
+        const account = { username, password: hashedPassword };
+        let accountResults = await db.insert(accounts).values([account]).returning();
+        let authId = accountResults[0].authId
+
+        let {firstName, lastName, email, age} = req.body
+        const user = {authId, firstName, lastName, email, age}
+        let userResults = await db.insert(users).values([user]);
+
+        res.status(200).send(userResults)
         next()
      }
     catch(e) {
