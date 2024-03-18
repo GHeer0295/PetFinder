@@ -1,26 +1,42 @@
 import React, {useState} from 'react';
 import { Form } from "react-router-dom";
+import {register, NewUser} from "../../services/authService"
 import './Registration.css'
 
 
 const Registration: React.FC = () => {
     const [email, setEmail] = useState<string>('');
-    const [firstName, setFirstName] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
-    const [age, setAge] = useState<number>(18);
+    const [firstname, setFirstname] = useState<string>('');
+    const [lastName, setLastname] = useState<string>('');
+    const [age, setAge] = useState<number | undefined>(undefined);
 
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const newUser: NewUser = {
+            username: username,
+            password: password,
+            firstname: firstname,
+            lastname: lastName,
+            age: age,
+            email: email
+        }
+
+        await register(newUser);
+    }
+
     return (
         <div className='flex justify-center items-center h-screen'>
-            <Form action='register'>
+            <Form onSubmit={handleSubmit}>
             <div className='mb-2'>
                     <label>First Name:
                         <input 
                             type="text"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)} />
+                            value={firstname}
+                            onChange={(e) => setFirstname(e.target.value)} />
                     </label>
                 </div>
                 <div className='mb-2'>
@@ -28,7 +44,7 @@ const Registration: React.FC = () => {
                         <input 
                             type="text"
                             value={lastName}
-                            onChange={(e) => setLastName(e.target.value)} />
+                            onChange={(e) => setLastname(e.target.value)} />
                     </label>
                 </div>
                 <div className='mb-2'>
@@ -42,7 +58,7 @@ const Registration: React.FC = () => {
                 <div className='mb-2'>
                     <label>Age: 
                         <input 
-                            type="number"
+                            type="text"
                             value={age}
                             onChange={(e) => setAge(parseInt(e.target.value))} />
                     </label>

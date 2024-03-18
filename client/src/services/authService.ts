@@ -1,15 +1,15 @@
 const API_URL = 'http://localhost:8080:/api/auth/'
 
-type NewUser = {
+export type NewUser = {
     username: string,
     password: string,
-    firstName: string,
-    lastName: string,
-    email: string
-    age: number,
+    firstname: string,
+    lastname: string,
+    email: string,
+    age: number | undefined,
 }
 
-type User = {
+export type User = {
     username: string,
     password: string
 }
