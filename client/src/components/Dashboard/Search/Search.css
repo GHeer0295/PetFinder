@@ -74,6 +74,10 @@ input[type="text"]:focus {
   font-size: medium;
 }
 
+.locationContainer > svg {
+  font-size: medium;
+  margin-right:1rem;
+}
 .searchIcon {
   padding: 0.5rem 0.5rem;
   background-image: linear-gradient(to bottom right, #ff334e, #ff6699);

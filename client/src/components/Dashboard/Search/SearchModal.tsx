@@ -5,17 +5,34 @@ interface SearchModalProps {
   searchResults: string[];
   onSelectResult: (result: string) => void;
   isHidden: boolean;
+  hoveredItem: number;
+  setHoveredItem: (num: number) => void;
 }
 
-const SearchModal: React.FC<SearchModalProps> = ({ currentValue, searchResults, onSelectResult, isHidden }) => {
+const SearchModal: React.FC<SearchModalProps> = ({ currentValue, searchResults, onSelectResult, isHidden, hoveredItem, setHoveredItem }) => {
   const [filteredResults, setFilteredResults] = useState<string[]>(searchResults);
 
   useEffect(() => {
-    const filtered = searchResults.filter(result =>
-      result.toLowerCase().includes(currentValue.toLowerCase())
-    );
-    setFilteredResults(filtered);
-  }, [currentValue, searchResults]);
+    // const filtered = searchResults;
+    if (searchResults && currentValue) {
+      const filtered = searchResults.filter(result =>
+        result.toLowerCase().includes(currentValue.toLowerCase())
+      );
+      setFilteredResults(filtered);
+    }
+  }, [currentValue, searchResults, hoveredItem]);
+
+  useEffect(() => {
+    if (hoveredItem === -2) {
+      setHoveredItem(filteredResults.length - 1);
+    }
+    else if (hoveredItem > filteredResults.length - 1) {
+      setHoveredItem(-1);
+    }
+    if (hoveredItem !== -1) {
+      onSelectResult(filteredResults[hoveredItem]);
+    }
+  }, [hoveredItem])
 
   if (isHidden) {
     return null;
@@ -26,7 +43,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ currentValue, searchResults, 
       { filteredResults.length > 0 && (filteredResults.map((result, index) => (
         <div
           key={index}
-          className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+          className={index === hoveredItem ? "px-4 py-2 cursor-pointer bg-gray-100" : "px-4 py-2 cursor-pointer hover:bg-gray-100"}
           onMouseDown={() => onSelectResult(result)}
         >
           {result}
