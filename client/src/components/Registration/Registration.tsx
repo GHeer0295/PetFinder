@@ -6,7 +6,7 @@ import './Registration.css'
 
 const Registration: React.FC = () => {
     const [email, setEmail] = useState<string>('');
-    const [firstname, setFirstname] = useState<string>('');
+    const [firstName, setFirstname] = useState<string>('');
     const [lastName, setLastname] = useState<string>('');
     const [age, setAge] = useState<number | undefined>(undefined);
 
@@ -19,7 +19,7 @@ const Registration: React.FC = () => {
         const newUser: NewUser = {
             username: username,
             password: password,
-            firstname: firstname,
+            firstname: firstName,
             lastname: lastName,
             age: age,
             email: email
@@ -35,7 +35,7 @@ const Registration: React.FC = () => {
                     <label>First Name:
                         <input 
                             type="text"
-                            value={firstname}
+                            value={firstName}
                             onChange={(e) => setFirstname(e.target.value)} />
                     </label>
                 </div>
