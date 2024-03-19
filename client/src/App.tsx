@@ -1,13 +1,21 @@
 import './App.css';
+import { Route, Routes } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Dashboard from './components/Dashboard/Dashboard';
+import SearchResults from './components/SearchResults/SearchResults'; // Import the SearchResults component
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Dashboard />
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/search-results" element={<SearchResults/>}/>
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
