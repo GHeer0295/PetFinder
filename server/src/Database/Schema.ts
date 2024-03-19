@@ -19,12 +19,19 @@ const pgTimestamp = () => timestamp('createdAt', { mode: 'date', withTimezone: t
 
 export const users = pgTable('users', {
     uid: uuid('uid').primaryKey().defaultRandom(),
+    authId: uuid('ownerId').notNull().references(() => accounts.authId, cascadeAction),
     email: varchar('email', { length: 256 }).unique().notNull(),
     firstName: varchar('firstName', { length: 256 }).notNull(),
     lastName: varchar('lastName', { length: 256 }).notNull(),
     age: integer('age').notNull(),
     createdAt: pgTimestamp()
 });
+
+export const accounts = pgTable('account', {
+    authId: uuid('uid').primaryKey().defaultRandom(),
+    username: varchar('username', { length: 256 }).notNull(),
+    password: varchar('password', { length: 256 }).notNull()
+})
 
 export const userRelations = relations(users, ({ many }) => ({
     pets: many(pets),

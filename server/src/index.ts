@@ -1,11 +1,14 @@
 import dotenv from "dotenv";
 import express, { Express, Request, Response, Router } from "express";
+import connectRedis from 'connect-redis'
 import cors from "cors";
 import { Database } from "../Database/Database";
 import * as http from "http";
 import * as socketIO from "socket.io";
 import { conversationRouter } from "./Routes/ConversationRoute";
 import { messageRouter } from "./Routes/MessageRoute";
+import { authRouter } from "./Routes/AuthRoute";
+import session from 'express-session'
 
 dotenv.config();
 
@@ -14,19 +17,36 @@ const app: Express = express();
 const server: http.Server = http.createServer(app);
 const io: socketIO.Server = new socketIO.Server();
 io.attach(server);
+
 const port = process.env.PORT || 8000;
+const session_key = process.env.SECRET_KEY || 'secret_sauce'
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
-// ROUTES
+// const RedisStore = connectRedis(session)
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+    name: 'nsession',
+    // store: new RedisStore({
+    //     host: "localhost",
+    //     port: 6379
+    // }),
+    secret: session_key,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: true }
+}))
+
+// ROUTES 
 app.use('/api/conversations', conversationRouter);
 app.use('/api/message', messageRouter);
+app.use('/api/auth', authRouter)
 
 server.listen(port, () => {
     try {
-        Database.connect();
+        //Database.connect();
         console.log("LISTENING ON PORT " + port)
     } catch(error) {
         console.error(`Error: ${error}. while turning on server and connecting to database`);
