@@ -22,7 +22,7 @@ const Login: React.FC = () => {
         }
 
         catch(e) {
-            console.log({error: e})
+            console.log(e)
         }
     }
 
@@ -44,6 +44,7 @@ const Login: React.FC = () => {
                         <input 
                             id='password'
                             name='password'
+                            type='password'
                             className='block border border-gray-300 text-gray-900 rounded w-full'
                             value={password}
                             onChange={(e) => setPassword(e.target.value)} />

@@ -32,7 +32,7 @@ const Registration: React.FC = () => {
             navigate('/login')
         }
         catch (e) {
-            console.log({error: e})
+            console.log(e)
         }
 
     }
@@ -90,6 +90,7 @@ const Registration: React.FC = () => {
                         <input 
                             className=' border border-gray-300 text-gray-900 rounded w-full'
                             id='password'
+                            type='password'
                             name='password'
                             value={password}
                             onChange={(e) => setPassword(e.target.value)} />
