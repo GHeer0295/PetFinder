@@ -1,0 +1,48 @@
+.message-container {
+    margin-top: 20px;
+  }
+  
+  .message {
+    padding: 10px;
+    margin-bottom: 10px;
+    overflow-wrap: break-word;
+    width: max-content;
+    display: flex;
+  }
+  
+  .sent {
+    flex-direction: column;
+    background-color: #DCF8C6;
+    border-radius: 10px 3px 10px 10px;
+    align-self: right;
+    margin-left: 50%;
+    margin-right: auto;
+  }
+  
+  .received {
+    flex-direction: column;
+    background-color: #E8E8E8;
+    border-radius: 3px 10px 10px 10px;
+    margin-left: 0;
+    margin-right: auto;
+  }
+  
+  .loading-message {
+    margin-top: 20px;
+    font-style: italic;
+    color: #666;
+  }
+  
+  .container {
+    overflow-y: scroll;
+    height: 400px;
+  }
+  
+  .message-input {
+    display: none;
+  }
+  
+  .App {
+    align-items: center;
+    display: flex;
+  }

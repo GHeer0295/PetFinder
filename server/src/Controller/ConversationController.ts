@@ -1,51 +1,53 @@
 import { Request, Response, NextFunction } from 'express';
-import { Database } from "../../Database/Database";
+import { db } from '../Database/Database'
+import { CreateConversation, conversations } from '../Database/Schema';
+import { arrayOverlaps, eq } from 'drizzle-orm'
+import { v4 as uuid } from 'uuid';
 
-const NO_ERROR = 1000;
-
-export const getConversations = (req: Request, res: Response, next: NextFunction) => {
+// based on conversation UUID
+// May not be needed
+export const getConversation = async (req: Request, res: Response, next: NextFunction) => {
     const conversationID = req.params.conversationID;
     console.log(`Request: getConversations at ${req.url} with ConversationID: ${conversationID}`);
-    Database.getConversationMessages(conversationID)
-        .then((data) => {
-            return res.json(data);
-        })
-        .catch((error) => {
-            return error;
-        });
+    try {
+        const data = await db.select().from(conversations).where(eq(conversations.convoId, conversationID));
+        res.json(data)
+    } catch(error) {
+        console.log(`${error}. While trying to insert new conversation into database.`);
+        res.sendStatus(500).json(`Could not create conversation`);
+    }
 }
 
-export const createNewConversation = (req: Request, res: Response, next: NextFunction) => {
-    const { conversationID, members = ''} = req.body;
-    console.log(`Request: createNewConversation at ${req.url} with ConversationID: ${conversationID}`);
-    Database.createNewConversation(conversationID, members)
-        .then((data) => {
-            if(data !== NO_ERROR) {
-                return res.status(400).json(`Cannot create new conversation right now.`);
-            }
+// POST create new conversation for user
+export const createNewConversation = async (req: Request, res: Response, next: NextFunction) => {
+    const members = req.body.members
+    console.log(`Request: createNewConversation at ${req.url}`);
 
-            return res.json("OK");
-        })
-        .catch((error) => {
-            res.sendStatus(500);
-            console.log(`${error}`);
-        });
+    const newConvo: CreateConversation = {
+        convoId: uuid(),
+        members: members,
+        createdAt: new Date()
+    }
+
+    try {
+        await db.insert(conversations).values(newConvo);
+        res.sendStatus(200);
+    } catch(error) {
+        console.log(`${error}. While trying to insert new conversation into database.`);
+        res.sendStatus(500).json(`Could not create conversation`);
+    }
 }
 
-export const getUserConversations = (req: Request, res: Response, next: NextFunction) => {
-    const UserUUID = req.params.userUUID;
-    console.log(`Request: getUserConversations at ${req.url} with UserUUID: ${UserUUID}`);
-    Database.getUserConversations(UserUUID)
-        .then((data) => {
-            // if data is of type number, then an error occured
-            if(typeof data === 'number') {
-                return res.status(500).json(`Failed to get User Conversations`);
-            }
+// GET all user converstions
+export const getUserConversations = async (req: Request, res: Response, next: NextFunction) => {
+    const userUUID = req.params.userUUID;
+    console.log(`Request: getUserConversations at ${req.url} with UserUUID: ${userUUID}`);
 
-            return res.json(data);
-        })
-        .catch((error) => {
-            res.status(500);
-            console.log(error);
-        })
+    try {
+        const data = await db.select().from(conversations).where(arrayOverlaps(conversations.members, [userUUID]))
+        res.json(data);
+    } catch(error) {
+        console.log(`${error}. While trying to get conversation data from database.`);
+        res.sendStatus(500).json(`Could not get Conversations`);
+    }
 }
