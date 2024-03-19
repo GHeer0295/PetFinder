@@ -1,12 +1,12 @@
-const API_URL = 'http://localhost:8080:/api/auth/'
+const API_URL = 'http://localhost:8080/api/auth/'
 
 export type NewUser = {
     username: string,
     password: string,
-    firstname: string,
-    lastname: string,
+    firstName: string,
+    lastName: string,
     email: string,
-    age: number | undefined,
+    age: number | string,
 }
 
 export type User = {
@@ -27,6 +27,8 @@ export async function register(data: NewUser) {
         if (!auth_res.ok) {
             throw new Error("Unable to create new user")
         }
+
+        console.log(auth_res)
     }
     catch(err) {
         console.log(err)
@@ -46,6 +48,8 @@ export async function login(data: User) {
         if (!auth_res.ok) {
             throw new Error("Unable to login")
         }
+
+        console.log(auth_res)
     }
     catch(err) {
         console.log(err)

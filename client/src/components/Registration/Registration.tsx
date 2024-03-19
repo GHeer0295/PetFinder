@@ -8,7 +8,7 @@ const Registration: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [firstName, setFirstname] = useState<string>('');
     const [lastName, setLastname] = useState<string>('');
-    const [age, setAge] = useState<number | undefined>(undefined);
+    const [age, setAge] = useState<number | string >('');
 
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -19,8 +19,8 @@ const Registration: React.FC = () => {
         const newUser: NewUser = {
             username: username,
             password: password,
-            firstname: firstName,
-            lastname: lastName,
+            firstName: firstName,
+            lastName: lastName,
             age: age,
             email: email
         }
