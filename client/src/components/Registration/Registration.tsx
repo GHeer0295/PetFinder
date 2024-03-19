@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Form } from "react-router-dom";
+import { Form, useNavigate} from "react-router-dom";
 import {register, NewUser} from "../../services/authService"
 import './Registration.css'
 
@@ -13,6 +13,8 @@ const Registration: React.FC = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
+    const navigate = useNavigate()
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -25,7 +27,9 @@ const Registration: React.FC = () => {
             email: email
         }
 
-        await register(newUser);
+        let res = await register(newUser);
+        navigate('/login')
+
     }
 
     return (

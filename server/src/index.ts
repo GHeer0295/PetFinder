@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express, { Express, Request, Response, Router } from "express";
 import connectRedis from 'connect-redis'
 import cors from "cors";
+import path from 'path'
 import { Database } from "../Database/Database";
 import * as http from "http";
 import * as socketIO from "socket.io";
@@ -21,9 +22,11 @@ io.attach(server);
 const port = process.env.PORT || 8000;
 const session_key = process.env.SECRET_KEY || 'secret_sauce'
 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // const RedisStore = connectRedis(session)
 app.set('trust proxy', 1) // trust first proxy
@@ -43,6 +46,10 @@ app.use(session({
 app.use('/api/conversations', conversationRouter);
 app.use('/api/message', messageRouter);
 app.use('/api/auth', authRouter)
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 server.listen(port, () => {
     try {

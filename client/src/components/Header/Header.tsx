@@ -8,14 +8,16 @@ const Header: React.FC = () => {
   return (
     <header className="header-container">
       <div className="header-content">
-        <img src={logo} alt="Logo" className="logo" />
-        <div className="user-icon">
-          <IconContext.Provider value={{ color: "black", size: "35px" }}>
-            <div>
-              <FaUserCircle />
-            </div>
-          </IconContext.Provider>
-        </div>
+          <img src={logo} alt="Logo" className="logo" />
+          <div className="user-icon">
+            <IconContext.Provider value={{ color: "black", size: "35px" }}>
+              <a href="/login">
+                <div>
+                  <FaUserCircle />
+                </div>
+              </a>
+            </IconContext.Provider>
+          </div>
       </div>
     </header>
   );

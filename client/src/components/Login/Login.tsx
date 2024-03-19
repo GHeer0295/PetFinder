@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import { Form } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 import {login, User} from "../../services/authService"
 import './Login.css'
-
 const Login: React.FC = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
+    const navigate = useNavigate()
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
     
@@ -16,7 +16,8 @@ const Login: React.FC = () => {
     
         }
     
-        await login(user);
+        let res = await login(user);
+        navigate('/')
     }
 
     return (
@@ -42,7 +43,10 @@ const Login: React.FC = () => {
                             onChange={(e) => setPassword(e.target.value)} />
                     </label>
                 </div>
-                <button className='bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' type='submit'>Login</button>
+                <div className='flex justify-between'>
+                    <button className='bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' type='submit'>Login</button>
+                    <button onClick={() => navigate('/register')} className='bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' >Register</button>
+                </div>
             </Form>
         </div>
     );
