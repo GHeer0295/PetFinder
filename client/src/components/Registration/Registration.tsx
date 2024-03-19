@@ -27,8 +27,13 @@ const Registration: React.FC = () => {
             email: email
         }
 
-        let res = await register(newUser);
-        navigate('/login')
+        try {
+            await register(newUser);
+            navigate('/login')
+        }
+        catch (e) {
+            console.log({error: e})
+        }
 
     }
 

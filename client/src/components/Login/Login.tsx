@@ -15,9 +15,15 @@ const Login: React.FC = () => {
             password: password,
     
         }
-    
-        let res = await login(user);
-        navigate('/')
+        
+        try {
+            await login(user);
+            navigate('/')
+        }
+
+        catch(e) {
+            console.log({error: e})
+        }
     }
 
     return (
@@ -34,14 +40,13 @@ const Login: React.FC = () => {
                 </div>
 
                 <div className='mb-5'>
-                    <label className='mb-3 font-semibold' htmlFor='password'>Password
+                    <label className='mb-3 font-semibold' htmlFor='password'>Password</label>
                         <input 
                             id='password'
                             name='password'
                             className='block border border-gray-300 text-gray-900 rounded w-full'
                             value={password}
                             onChange={(e) => setPassword(e.target.value)} />
-                    </label>
                 </div>
                 <div className='flex justify-between'>
                     <button className='bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' type='submit'>Login</button>
