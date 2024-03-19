@@ -29,7 +29,6 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // const RedisStore = connectRedis(session)
-app.set('trust proxy', 1) // trust first proxy
 app.use(session({
     name: 'nsession',
     // store: new RedisStore({
@@ -38,8 +37,7 @@ app.use(session({
     // }),
     secret: session_key,
     resave: false,
-    saveUninitialized: false,
-    cookie: { secure: true }
+    saveUninitialized: true,
 }))
 
 // ROUTES 

@@ -21,6 +21,8 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         const passwordMatch = await bcrypt.compare(password, result[0].password);
         if (passwordMatch){
             req.session.user = result[0].authId
+            console.log(req.session.user)
+
             res.status(200).send("Login success!")
             next()
         }
@@ -69,7 +71,8 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
 
 export const isLoggedIn = async (req: Request, res: Response, next: NextFunction) => {
     if (req.session.user) {
-        next()
+        console.log(req.session.user)
+        return res.status(200).send("User is authenticated")
     }
     else {
         return res.status(403).send("User not authenticated")

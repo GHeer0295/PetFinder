@@ -30,7 +30,6 @@ export async function register(data: NewUser) {
     console.log(auth_res)
 }
 
-
 export async function login(data: User) {
     const auth_res = await fetch(API_URL + 'login', {
         method: "POST",
@@ -45,6 +44,20 @@ export async function login(data: User) {
     }
 
     console.log(auth_res)
+}
 
+export async function isLoggedIn() {
+    const res = await fetch(API_URL + 'isLoggedIn', {
+        method: "GET",
+        headers: {
+            "Content-Type":"application/json",
+        }
+    }) 
+    
+    if (!res.ok) {
+        throw new Error("User is not authenticated")
+    }
+
+    console.log("Authentication successful")
 }
 

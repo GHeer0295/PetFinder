@@ -11,7 +11,7 @@ const Header: React.FC = () => {
           <img src={logo} alt="Logo" className="logo" />
           <div className="user-icon">
             <IconContext.Provider value={{ color: "black", size: "35px" }}>
-              <a href="/login">
+              <a href="/profile">
                 <div>
                   <FaUserCircle />
                 </div>

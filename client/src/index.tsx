@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import Login from './routes/LoginPage';
 import Register from './routes/RegistrationPage';
+import Profile from './routes/ProfilePage';
 import reportWebVitals from './reportWebVitals';
 import {
   createBrowserRouter,
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />
+  },
+  {
+    path: "/profile",
+    element: <Profile />
   }
 ]);
 
