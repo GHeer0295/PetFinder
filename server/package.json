@@ -29,7 +29,8 @@
     "http": "^0.0.1-security",
     "pg": "^8.11.3",
     "socket.io": "^4.7.4",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
