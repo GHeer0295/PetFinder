@@ -1,0 +1,9 @@
+.search-results-container {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 92vh;
+    background: linear-gradient(180deg, #FCFCFC 0%,#ffb4cd 50%, #fd6276 120%);
+}
+  
