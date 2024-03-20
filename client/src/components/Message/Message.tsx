@@ -151,7 +151,6 @@ const Message = () => {
     })
 
     socket.off("joined").on("joined", (data: any) => {
-        console.log("JOINED")
         setConnectedRooms(prevRooms => new Set(prevRooms.add(data)));
     });
 

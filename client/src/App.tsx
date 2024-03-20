@@ -1,23 +1,24 @@
 import './App.css';
+import { Route, Routes } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Dashboard from './components/Dashboard/Dashboard';
+import SearchResults from './components/SearchResults/SearchResults'; // Import the SearchResults component
 import Message from './components/Message/Message';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // temp: Added router have messages on another page for now
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Dashboard />
-      <BrowserRouter>
+    <BrowserRouter>
+      <div className="App">
+        <Header />
         <Routes>
-          <Route path="/">
-            <Route path='message' element={<Message />}/>
-          </Route>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/search-results" element={<SearchResults/>}/>
+          <Route path='message' element={<Message />}/>
         </Routes>
-      </BrowserRouter>
-    </div>
+      </div>
+    </BrowserRouter>
   );
 }
 

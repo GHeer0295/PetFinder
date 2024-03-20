@@ -57,7 +57,8 @@ io.on('connection', (socket: socketIO.Socket) => {
 
     socket.on('disconnect', () => {
         console.log('Client disconnected');
-      });
+        conversationRooms.clear();
+    });
 
     socket.on('private message', async (data: any) => {
         const { convoId, senderId, message = '' } = data;
