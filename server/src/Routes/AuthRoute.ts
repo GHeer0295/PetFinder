@@ -1,8 +1,9 @@
 import express, { Router } from 'express';
-import { login, register, logout } from "../Controller/AuthController"
+import { login, register, logout, isLoggedIn } from "../Controller/AuthController"
 
 export const authRouter: Router = express.Router();
 
 authRouter.post('/login', login);
 authRouter.post('/register', register);
 authRouter.post('/logout', logout);
+authRouter.get('/isLoggedIn', isLoggedIn);
