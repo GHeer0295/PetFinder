@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Form, useNavigate} from "react-router-dom";
-import { isLoggedIn } from "../../services/authService"
+import { isLoggedIn, logout } from "../../services/authService"
 
 
 const Profile: React.FC = () => {
@@ -19,12 +19,24 @@ const Profile: React.FC = () => {
     useEffect(() => {
         checkAuthentication();
       }, []);
+
+      const handleLogout = async(e: React.FormEvent) => {
+        try {
+            await logout();
+            navigate('/login')
+        }
+
+        catch(e) {
+            console.log(e)
+        }
+      }
     
     return (
-        <div className='flex'>
+        <div className='flex justify-center items-center h-[90vh]'>
             <h1>
                 Logged in!
             </h1>
+            <button className='bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' onClick={handleLogout}>Logout</button>
         </div>
     );
 }

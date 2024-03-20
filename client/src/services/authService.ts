@@ -61,3 +61,17 @@ export async function isLoggedIn() {
     console.log("Authentication successful")
 }
 
+export async function logout() {
+    const res = await fetch(API_URL + 'logout', {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json",
+        }
+    }) 
+
+    if (!res.ok) {
+        throw new Error("Logout unsuccessful")
+    }
+
+    console.log("Logout successful")
+}
