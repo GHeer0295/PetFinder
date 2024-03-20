@@ -17,6 +17,9 @@ const cascadeAction: ReferenceConfig['actions'] = {
 
 const pgTimestamp = () => timestamp('createdAt', { mode: 'date', withTimezone: true }).defaultNow().notNull();
 
+const provinces = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'] as const;
+export const provinceEnum = pgEnum('province', provinces);
+
 export const users = pgTable('users', {
     uid: uuid('uid').primaryKey().defaultRandom(),
     authId: uuid('ownerId').notNull().references(() => accounts.authId, cascadeAction),
@@ -24,6 +27,8 @@ export const users = pgTable('users', {
     firstName: varchar('firstName', { length: 256 }).notNull(),
     lastName: varchar('lastName', { length: 256 }).notNull(),
     age: integer('age').notNull(),
+    province: provinceEnum('province').notNull(),
+    city: varchar('city', { length: 256 }).notNull(),
     createdAt: pgTimestamp()
 });
 
@@ -79,6 +84,8 @@ export const adoptionPosts = pgTable('adoptionPosts', {
     adoptPostId: uuid('adoptPostId').primaryKey().defaultRandom(),
     desc: text('desc').notNull(),
     title: varchar('title', { length: 256 }).notNull(),
+    province: provinceEnum('province').notNull(),
+    city: varchar('city', { length: 256 }).notNull(),
     createdAt: pgTimestamp(),
 
     petId: uuid('petId').notNull().references(() => pets.petId, cascadeAction),
@@ -102,7 +109,8 @@ export const adoptionPostRelations = relations(adoptionPosts, ({ one, many }) =>
     tags: many(postTags)
 }));
 
-export const adoptionRequestStatusEnum = pgEnum('adoptionRequestStatus', ['PENDING', 'ACCEPTED', 'REJECTED']);
+const adoptionRequestStatus = ['PENDING', 'ACCEPTED', 'REJECTED'] as const;
+export const adoptionRequestStatusEnum = pgEnum('adoptionRequestStatus', adoptionRequestStatus);
 
 export const adoptionRequests = pgTable('adoptionRequests', {
     adoptReqId: uuid('adoptReqId').primaryKey().defaultRandom(),
@@ -259,8 +267,14 @@ export const conversationMessageRelations = relations(conversationMessages, ({ o
     })
 }));
 
+export type Provinces = typeof provinces[number]
+export type AdoptionRequestStatus = typeof adoptionRequestStatus[number]
+
 export type User = typeof users.$inferSelect
 export type CreateUser = typeof users.$inferInsert
+
+export type Account = typeof accounts.$inferSelect
+export type CreateAccount = typeof accounts.$inferInsert
 
 export type Pet = typeof pets.$inferSelect
 export type CreatePet = typeof pets.$inferInsert

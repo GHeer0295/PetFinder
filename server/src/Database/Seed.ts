@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcrypt'
 import { db } from './Database';
 import {
+    CreateAccount,
     CreateAdoptionPost,
     CreateAdoptionRequest,
     CreateConversation,
@@ -14,6 +16,7 @@ import {
     CreateSpecies,
     CreateTag,
     CreateUser,
+    accounts,
     adoptionPosts,
     adoptionRequests,
     conversationMessages,
@@ -29,41 +32,79 @@ import {
     users
 } from './Schema';
 
+const seedAccounts: CreateAccount[] = [
+    {
+        username: 'bob123',
+        password: 'password',
+        authId: uuidv4()
+    },
+    {
+        username: 'john_doee22',
+        password: 'john_password',
+        authId: uuidv4()
+    },
+    {
+        username: 'jemily2002',
+        password: '123123',
+        authId: uuidv4()
+    },
+    {
+        username: 'wilson_liam',
+        password: 'wilson',
+        authId: uuidv4()
+    }
+];
+
 const seedUsers: CreateUser[] = [
     {
         uid: uuidv4(),
         email: 'bob123@gmail.com',
         firstName: 'Bob',
         lastName: 'Smith',
-        age: 25
+        age: 25,
+        province: 'BC',
+        city: 'Vancouver',
+        authId: seedAccounts[0].authId!
     },
     {
         uid: uuidv4(),
         email: 'john_doee22@gmail.com',
         firstName: 'John',
         lastName: 'Doe',
-        age: 30
+        age: 30,
+        province: 'ON',
+        city: 'Toronto',
+        authId: seedAccounts[1].authId!
     },
     {
         uid: uuidv4(),
         email: 'jemily2002@gmail.com',
         firstName: 'Emily',
         lastName: 'Jones',
-        age: 22
+        age: 22,
+        province: 'BC',
+        city: 'Surrey',
+        authId: seedAccounts[2].authId!
     },
     {
         uid: uuidv4(),
         email: 'wilson_liam@bca.com',
         firstName: 'Liam',
         lastName: 'Wilson',
-        age: 19
+        age: 19,
+        province: 'BC',
+        city: 'Vancouver',
+        authId: seedAccounts[3].authId!
     },
     {
         uid: uuidv4(),
         email: 'sb_0304@yahoo.com',
         firstName: 'Sophie',
         lastName: 'Brown',
-        age: 21
+        age: 21,
+        province: 'BC',
+        city: 'Vancouver',
+        authId: seedAccounts[3].authId!
     }
 ];
 
@@ -122,28 +163,36 @@ const seedAdoptionPosts: CreateAdoptionPost[] = [
         desc: 'I have a dog that needs a new home',
         title: 'Dog needs a new home',
         petId: seedPets[0].petId!,
-        userId: seedUsers[0].uid!
+        userId: seedUsers[0].uid!,
+        city: 'Vancouver',
+        province: 'BC'
     },
     {
         adoptPostId: uuidv4(),
         desc: 'I have a cat that needs a new home',
         title: 'Cat needs a new home',
         petId: seedPets[1].petId!,
-        userId: seedUsers[1].uid!
+        userId: seedUsers[1].uid!,
+        city: 'Toronto',
+        province: 'ON'
     },
     {
         adoptPostId: uuidv4(),
         desc: 'I have a rabbit that needs a new home',
         title: 'Rabbit needs a new home',
         petId: seedPets[2].petId!,
-        userId: seedUsers[2].uid!
+        userId: seedUsers[2].uid!,
+        city: 'Surrey',
+        province: 'BC'
     },
     {
         adoptPostId: uuidv4(),
         desc: 'I have a hamster that needs a new home',
         title: 'Hamster needs a new home',
         petId: seedPets[4].petId!,
-        userId: seedUsers[1].uid!
+        userId: seedUsers[1].uid!,
+        city: 'Vancouver',
+        province: 'BC'
     }
 ];
 
@@ -398,6 +447,12 @@ const seedConversationMessages: CreateConversationMessage[] = [
 console.log('Seeding...');
 db
     .transaction(async tx => {
+        const seedAccountsHashed = seedAccounts.map(async account => ({
+            ...account,
+            password: await bcrypt.hash(account.password, 10)
+        }));
+        await tx.insert(accounts).values(await Promise.all(seedAccountsHashed));
+        
         await tx.insert(users).values(seedUsers);
         await tx.insert(species).values(seedSpecies);
         await tx.insert(pets).values(seedPets);
