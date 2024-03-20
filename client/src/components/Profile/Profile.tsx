@@ -21,7 +21,7 @@ const Profile: React.FC = () => {
       }, []);
     
     return (
-        <div>
+        <div className='flex'>
             <h1>
                 Logged in!
             </h1>

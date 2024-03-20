@@ -27,10 +27,10 @@ const Login: React.FC = () => {
     }
 
     return (
-        <div className='flex justify-center items-center h-[60vh]'>
-            <Form onSubmit={handleSubmit}>
+        <div className='flex justify-center items-center h-[90vh]'>
+            <form onSubmit={handleSubmit}>
                 <div className='mb-4'>
-                    <label className='mb-3 font-semibold' htmlFor='username'>Username</label>
+                    <label className='mb-2 font-semibold text-left block' htmlFor='username'>Username</label>
                         <input
                             className='block border border-gray-300 text-gray-900 rounded w-full' 
                             id='username'
@@ -39,8 +39,8 @@ const Login: React.FC = () => {
                             onChange={(e) => setUsername(e.target.value)} />
                 </div>
 
-                <div className='mb-5'>
-                    <label className='mb-3 font-semibold' htmlFor='password'>Password</label>
+                <div className='mb-6'>
+                    <label className='mb-2 font-semibold text-left block' htmlFor='password'>Password</label>
                         <input 
                             id='password'
                             name='password'
@@ -53,7 +53,7 @@ const Login: React.FC = () => {
                     <button className='bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' type='submit'>Login</button>
                     <button onClick={() => navigate('/register')} className='bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' >Register</button>
                 </div>
-            </Form>
+            </form>
         </div>
     );
 }
