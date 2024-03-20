@@ -1,9 +1,7 @@
 import dotenv from "dotenv";
-import express, { Express, Request, Response, Router } from "express";
-import connectRedis from 'connect-redis'
+import express, { Express } from "express";
 import cors from "cors";
 import path from 'path'
-import { Database } from "../Database/Database";
 import * as http from "http";
 import * as socketIO from "socket.io";
 import { conversationRouter } from "./Routes/ConversationRoute";
@@ -18,6 +16,7 @@ dotenv.config();
 const app: Express = express();
 const server: http.Server = http.createServer(app);
 const io: socketIO.Server = new socketIO.Server();
+let conversationRooms = new Set();
 io.attach(server);
 
 const port = process.env.PORT || 8000;
@@ -52,33 +51,51 @@ app.get('*', (req, res) => {
 });
 
 server.listen(port, () => {
-    try {
-        //Database.connect();
-        console.log("LISTENING ON PORT " + port)
-    } catch(error) {
-        console.error(`Error: ${error}. while turning on server and connecting to database`);
-    }
+    console.log(`Listening on port: ${port}`)
 });
 
 // SOCKET LISTENERS
 io.on('connection', (socket: socketIO.Socket) => {
-    console.log("CONNECTED to websocket");
+    console.log("Connected to websocket");
 
     socket.on('disconnect', () => {
         console.log('Client disconnected');
-      });
-
-    socket.on('private message', (data) => {
-        const { conversationID, senderID, message, members, isNew = '' } = data;
-        Database.saveMessage(conversationID, senderID, message, members, isNew)
-            .catch((error) => {
-                console.error(`${error}`);
-            });
-        io.to(conversationID).emit('message', data);
+        conversationRooms.clear();
     });
 
-    socket.on('join', (data) => {
-        socket.join(data);
-        console.log(`JOINED: ${data}`);
+    socket.on('private message', async (data: any) => {
+        const { convoId, senderId, message = '' } = data;
+        console.log(`private  message request from sender: ${senderId}`);
+        const newMessage: CreateConversationMessage = {
+            convoMsgId: uuid(),
+            message: message,
+            createdAt: new Date(),
+            senderId: senderId,
+            convoId: convoId
+        }
+
+        try {
+            await db.insert(conversationMessages).values(newMessage);
+            console.log(`Emitting message back to client with conversationID: ${convoId}`);
+            io.to(convoId).emit('get private message', newMessage);
+        } catch(error) {
+            console.error(`${error}. While trying to save message in the database.`)
+            io.to(convoId).emit('send error', newMessage);
+        }
+    });
+
+    // TODO: Change Type from any
+    socket.on('join', (data: any) => {
+        const conversationID = data.convoId;
+        const userID = data.userID
+        const userConvoKey = userID + "/" + conversationID
+
+        // to stop multiple join requests
+        if(!conversationRooms.has(userConvoKey)) {
+            socket.join(conversationID);
+            conversationRooms.add(userConvoKey);
+            console.log(`Socket joined room: ${conversationID}; UserConvoKey: ${userConvoKey}`);
+            io.to(conversationID).emit("joined", conversationID);
+        }
     });
 });
