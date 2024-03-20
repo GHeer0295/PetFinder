@@ -14,6 +14,7 @@ const searchFieldsValidator = Object.values(SearchFields)
     );
 
 export const searchValidator = z.object({
+    // validate page and pageSize as numeric strings
     page: z.string().regex(/^\d+$/).transform(Number).transform(n => n > 0 ? n : 1).optional(),
     pageSize: z.string().regex(/^\d+$/).transform(Number).transform(n => n > 0 ? n : 1).optional(),
     ...searchFieldsValidator
