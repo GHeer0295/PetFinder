@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./Message.css"
 import { Socket, io } from 'socket.io-client';
 import { UUID } from 'crypto';
@@ -14,13 +14,13 @@ interface CreateConversationMessage {
   convoId: string;
 }
 
-const Message = () => {
+const Message: React.FC = () => {
   const [messages, setMessages] = useState([{}])
   const [messageInput, setMessageInput] = useState('');
   const [conversations, setConversations] = useState<CreateConversationMessage[]>([]);
   // set upon selection
   const [curConversation, setCurConversation] = useState('');
-  const [connectedRoooms, setConnectedRooms] = useState(new Set());
+  const [connectedRooms, setConnectedRooms] = useState(new Set());
 
 
   // on login, must join all convesation rooms to recieve messages in real time
@@ -115,7 +115,7 @@ const Message = () => {
   useEffect(() => {
     // join all conversations on load
     for(let i = 0; i < conversations.length; i++) {
-        if(!connectedRoooms.has(conversations[i].convoId))
+        if(!connectedRooms.has(conversations[i].convoId))
             socket.emit('join', {convoId: conversations[i].convoId, userID: User_Convo});
     }
   });

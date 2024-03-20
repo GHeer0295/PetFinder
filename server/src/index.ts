@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
-import connectRedis from 'connect-redis'
 import express, { Express } from "express";
 import cors from "cors";
+import path from 'path'
 import * as http from "http";
 import * as socketIO from "socket.io";
 import { conversationRouter } from "./Routes/ConversationRoute";
@@ -24,12 +24,13 @@ io.attach(server);
 const port = process.env.PORT || 8000;
 const session_key = process.env.SECRET_KEY || 'secret_sauce'
 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // const RedisStore = connectRedis(session)
-app.set('trust proxy', 1) // trust first proxy
 app.use(session({
     name: 'nsession',
     // store: new RedisStore({
@@ -38,14 +39,17 @@ app.use(session({
     // }),
     secret: session_key,
     resave: false,
-    saveUninitialized: false,
-    cookie: { secure: true }
+    saveUninitialized: true,
 }))
 
 // ROUTES 
 app.use('/api/conversations', conversationRouter);
 app.use('/api/message', messageRouter);
 app.use('/api/auth', authRouter)
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 server.listen(port, () => {
     console.log(`Listening on port: ${port}`)
