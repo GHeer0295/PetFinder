@@ -171,8 +171,8 @@ const Message: React.FC = () => {
         <div className="container" id='messages'></div>
 
         <div className="message-input" id="message-input">
-          <input id='input' onChange={(e) => setMessageInput(e.target.value)}/>
-          <button onClick={sendMessage}> Send </button> 
+          <input id='input' className='input-box' onChange={(e) => setMessageInput(e.target.value)}/>
+          <button className="send-button" onClick={sendMessage}> Send </button> 
         </div>
       </div>
     </div>    
