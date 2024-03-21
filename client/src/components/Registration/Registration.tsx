@@ -77,7 +77,7 @@ const Registration: React.FC = () => {
                         id='age'
                         name='age'
                         value={age || ''}
-                        pattern="[0-9]" 
+                        pattern="^\d+$" 
                         required
                         onChange={(e) => setAge(parseInt(e.target.value))} />
                 </div>
