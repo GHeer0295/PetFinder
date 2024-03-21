@@ -13,7 +13,7 @@ services:
       DB_PASS: root
       DB_DATABASE: petFinder
     ports:
-      - "127.0.0.1:80:8000"
+      - "80:80"
   db:
     image: postgres:latest
     container_name: pet-finder-db
