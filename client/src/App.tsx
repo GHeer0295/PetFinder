@@ -7,7 +7,7 @@ import SearchResults from './components/SearchResults/SearchResults'; // Import 
 import Login from './components/Login/Login';
 import Register from './components/Registration/Registration';
 import Profile from './components/Profile/Profile';
-
+import Message from './components/Message/Message';
 
 function App() {
   return (
@@ -20,6 +20,7 @@ function App() {
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path="/profile" element={<Profile/>}/>
+          <Route path="/message" element={<Message />} />
         </Routes>
       </div>
     </BrowserRouter>
