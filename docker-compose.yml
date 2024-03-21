@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  app:
+  app:  
     build: .
     container_name: pet-finder-app
     depends_on:
@@ -13,7 +13,7 @@ services:
       DB_PASS: root
       DB_DATABASE: petFinder
     ports:
-      - "8000:80"
+      - "127.0.0.1:80:8000"
   db:
     image: postgres:latest
     container_name: pet-finder-db
