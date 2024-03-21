@@ -9,6 +9,9 @@ import { messageRouter } from "./Routes/MessageRoute";
 import { authRouter } from "./Routes/AuthRoute";
 import session from 'express-session'
 import { searchRouter } from "./Routes/SearchRoute";
+import { CreateConversationMessage, conversationMessages } from "./Database/Schema";
+import { v4 as uuid } from 'uuid'
+import { db } from "./Database/Database";
 
 dotenv.config();
 
