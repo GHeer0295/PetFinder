@@ -13,7 +13,7 @@ RUN npm install
 RUN npm run build
 
 # Move built client to server's public folder for serving
-RUN mv ../client/build ./public
+RUN mv ../client/build ./build/public
 
 EXPOSE 80
 
