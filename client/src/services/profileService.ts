@@ -1,5 +1,13 @@
 const API_URL = 'http://localhost:8080/api/profile/'
 
+export type User = {
+    firstName: string,
+    lastName: string,
+    email: string,
+    age: number | string,
+    province: string,
+    city: string
+}
 
 export async function getUserProfile() {
     const res = await fetch(API_URL, {
@@ -13,5 +21,5 @@ export async function getUserProfile() {
         throw new Error("Could not receive profile")
     }
 
-    console.log("Authentication successful")
+    return res.json() as Promise<User>
 }

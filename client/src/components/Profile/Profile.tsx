@@ -1,15 +1,33 @@
 import React, {useState, useEffect} from 'react';
 import { Form, useNavigate} from "react-router-dom";
 import { logout } from "../../services/authService"
-import { getUserProfile } from "../../services/profileService"
+import { getUserProfile, User } from "../../services/profileService"
+import { profile } from 'console';
 
 
 const Profile: React.FC = () => {
     const navigate = useNavigate()
 
+    const [email, setEmail] = useState<string>('');
+    const [firstName, setFirstname] = useState<string>('');
+    const [lastName, setLastname] = useState<string>('');
+    const [age, setAge] = useState<number | string >('');
+
+    const [province, setProvince] = useState<string>('');
+    const [city, setCity] = useState<string>('');
+
     const checkAuthentication = async () => {
         try {
-            let res = await getUserProfile()
+            let profileInfo = await getUserProfile()
+            console.log(profileInfo)
+            setEmail(profileInfo.email)
+            setFirstname(profileInfo.firstName)
+            setLastname(profileInfo.lastName)
+            setAge(profileInfo.age)
+
+            setProvince(profileInfo.province)
+            setCity(profileInfo.city)
+
         }
         catch(e) {
             console.log(e)
