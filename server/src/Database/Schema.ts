@@ -38,7 +38,13 @@ export const accounts = pgTable('account', {
     password: varchar('password', { length: 256 }).notNull()
 })
 
-export const userRelations = relations(users, ({ many }) => ({
+export const accountRelations = relations(accounts, ({ one }) => ({
+    user: one(users),
+  }));
+  
+
+
+export const userRelations = relations(users, ({ one, many }) => ({
     pets: many(pets),
     adoptionPosts: many(adoptionPosts),
     adoptionRequests: many(adoptionRequests),

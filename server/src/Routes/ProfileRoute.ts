@@ -1,7 +1,7 @@
 import express from "express";
-import { getUserInformation } from "../Controller/UserController";
+import { getUserInformation } from "../Controller/ProfileController";
 import { isLoggedIn } from "../Controller/AuthController";
 
-export const searchRouter = express.Router();
+export const profileRouter = express.Router();
 
-searchRouter.get('/', isLoggedIn, getUserInformation);
+profileRouter.get('/', isLoggedIn, getUserInformation);
