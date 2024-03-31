@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Form, useNavigate} from "react-router-dom";
-import { isLoggedIn, logout } from "../../services/authService"
+import { logout } from "../../services/authService"
+import { getUserProfile } from "../../services/profileService"
 
 
 const Profile: React.FC = () => {
@@ -8,7 +9,7 @@ const Profile: React.FC = () => {
 
     const checkAuthentication = async () => {
         try {
-            await isLoggedIn()
+            let res = await getUserProfile()
         }
         catch(e) {
             console.log(e)
