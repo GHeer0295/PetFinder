@@ -8,13 +8,13 @@ import { profile } from 'console';
 const Profile: React.FC = () => {
     const navigate = useNavigate()
 
-    const [email, setEmail] = useState<string>('');
-    const [firstName, setFirstname] = useState<string>('');
-    const [lastName, setLastname] = useState<string>('');
-    const [age, setAge] = useState<number | string >('');
+    const [email, setEmail] = useState<string>('test@gmail.com');
+    const [firstName, setFirstname] = useState<string>('John');
+    const [lastName, setLastname] = useState<string>('Smith');
+    const [age, setAge] = useState<number | string >('21');
 
-    const [province, setProvince] = useState<string>('');
-    const [city, setCity] = useState<string>('');
+    const [province, setProvince] = useState<string>('BC');
+    const [city, setCity] = useState<string>('Vancouver');
 
     const checkAuthentication = async () => {
         try {
@@ -36,7 +36,7 @@ const Profile: React.FC = () => {
     }
 
     useEffect(() => {
-        checkAuthentication();
+        //checkAuthentication();
       }, []);
 
       const handleLogout = async(e: React.FormEvent) => {
@@ -51,11 +51,37 @@ const Profile: React.FC = () => {
       }
     
     return (
-        <div className='flex justify-center items-center h-[90vh]'>
-            <h1>
+        <div className='flex justify-center items-center'>
+            <div className='flex flex-row flex-wrap w-1/2'>
+                <div className='basis-full flex justify-center mt-3'>
+                    <img className='rounded-full w-64 h-64 object-cover border-4 hover:shadow-md' src='https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D'></img>
+                </div>
+                <div className='basis-full mt-3'>
+                <p className='font-bold'>Name:</p>
+                    <p>{firstName} {lastName}</p>
+                </div>
+                <div className='basis-1/2 mt-3'>
+                <p className='font-bold'>Age:</p>
+                    <p>{age}</p>
+                </div>
+                <div className='basis-1/2 mt-3'>
+                <p className='font-bold'>Email:</p>
+                    <p>{email}</p>
+                </div>
+                <div className='basis-1/2 mt-3'>
+                <p className='font-bold'>City:</p>
+                    <p>{city}</p>
+                </div>
+                <div className='basis-1/2 mt-3'>
+                <p className='font-bold'>Province:</p>
+                    <p>{province}</p>
+                </div>
+            </div>
+            
+            {/* <h1>
                 Logged in!
             </h1>
-            <button className='bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' onClick={handleLogout}>Logout</button>
+            */}
         </div>
     );
 }
