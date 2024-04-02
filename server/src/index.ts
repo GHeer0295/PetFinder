@@ -44,7 +44,6 @@ app.use(session({
     secret: session_key,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true }
 }))
 
 // ROUTES 
