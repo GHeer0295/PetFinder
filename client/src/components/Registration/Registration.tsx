@@ -8,7 +8,7 @@ const Registration: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [firstName, setFirstname] = useState<string>('');
     const [lastName, setLastname] = useState<string>('');
-    const [age, setAge] = useState<number | string >('');
+    const [age, setAge] = useState<number>(18);
 
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -75,9 +75,10 @@ const Registration: React.FC = () => {
                     <input 
                         className=' border border-gray-300 text-gray-900 rounded w-full'
                         id='age'
+                        type='number'
                         name='age'
-                        value={age || ''}
-                        pattern="[0-9]" 
+                        value={age}
+                        min="18"
                         required
                         onChange={(e) => setAge(parseInt(e.target.value))} />
                 </div>
