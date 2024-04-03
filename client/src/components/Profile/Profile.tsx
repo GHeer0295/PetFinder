@@ -16,17 +16,17 @@ const Profile: React.FC = () => {
     const [province, setProvince] = useState<string>('BC');
     const [city, setCity] = useState<string>('Vancouver');
 
-    const checkAuthentication = async () => {
+    const getProfile = async () => {
         try {
             let profileInfo = await getUserProfile()
             console.log(profileInfo)
-            setEmail(profileInfo.email)
-            setFirstname(profileInfo.firstName)
-            setLastname(profileInfo.lastName)
-            setAge(profileInfo.age)
+            setEmail(profileInfo[0].email)
+            setFirstname(profileInfo[0].firstName)
+            setLastname(profileInfo[0].lastName)
+            setAge(profileInfo[0].age)
 
-            setProvince(profileInfo.province)
-            setCity(profileInfo.city)
+            setProvince(profileInfo[0].province)
+            setCity(profileInfo[0].city)
 
         }
         catch(e) {
@@ -36,7 +36,7 @@ const Profile: React.FC = () => {
     }
 
     useEffect(() => {
-        //checkAuthentication();
+        getProfile();
       }, []);
 
       const handleLogout = async(e: React.FormEvent) => {

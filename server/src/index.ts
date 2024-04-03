@@ -44,6 +44,7 @@ app.use(session({
     secret: session_key,
     resave: false,
     saveUninitialized: true,
+    cookie: {maxAge: 1000*60*60}
 }))
 
 // ROUTES 

@@ -1,14 +1,32 @@
-import React from "react";
+import React, {useState, useEffect, useContext} from "react";
 import logo from "../../resources/logo.png";
 import { useNavigate } from 'react-router-dom';
 import "./Header.css";
 import { IconContext } from "react-icons";
 import { FaUserCircle } from "react-icons/fa";
-import { logout } from "../../services/authService";
+import { isLoggedIn, logout } from "../../services/authService";
+import { AuthContext } from "../../contexts";
 
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
+
+  const checkAuthentication = async () => {
+    try {
+        await isLoggedIn()
+        authContext?.setIsAuth(true)
+
+    }
+    catch(e) {
+        console.log(e)
+        authContext?.setIsAuth(false)
+    }   
+  }
+  
+  useEffect(() => {
+    checkAuthentication();
+  }, [authContext?.isAuth]);
 
   const handleLogoClick = () => {
     navigate('./');
@@ -18,6 +36,7 @@ const Header: React.FC = () => {
     try {
         await logout();
         navigate('/login')
+        authContext?.setIsAuth(false)
     }
 
     catch(e) {
@@ -25,11 +44,20 @@ const Header: React.FC = () => {
     }
   }
 
+  const LogoutButton: React.FC | null = () => {
+    if (authContext?.isAuth) {
+      return <button className='mx-2 bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' onClick={handleLogout}>Logout</button>
+    }
+    return null
+  }
+
+
 
   return (
     <header className="header-container">
       <div className="header-content">
           <img src={logo} alt="Logo" className="logo" />
+          
           <div className="flex flex-row items-center">
 
             <div className="user-icon">
@@ -41,8 +69,7 @@ const Header: React.FC = () => {
                 </a>
               </IconContext.Provider>
             </div>
-            <button className='mx-2 bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' onClick={handleLogout}>Logout</button>
-
+            <LogoutButton />
           </div>
       </div>
     </header>

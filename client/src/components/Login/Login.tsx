@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { Form, useNavigate } from "react-router-dom";
 import {login, User} from "../../services/authService"
 import './Login.css'
+import { AuthContext } from '../../contexts';
 const Login: React.FC = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const authContext = useContext(AuthContext);
 
     const navigate = useNavigate()
     const handleSubmit = async (e: React.FormEvent) => {
@@ -18,6 +20,7 @@ const Login: React.FC = () => {
         
         try {
             await login(user);
+            authContext?.setIsAuth(true)
             navigate('/')
         }
 

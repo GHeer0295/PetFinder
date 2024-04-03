@@ -11,7 +11,7 @@ export const getUserInformation = async (req: Request, res: Response, next: Next
         let result = await db.select().from(users).where(eq(users.authId, auth_id))
         console.log(auth_id)
         console.log(result)
-        res.status(200).send(result)
+        return res.status(200).send(result)
      }
     catch(e) {
          return res.status(400).send(e)

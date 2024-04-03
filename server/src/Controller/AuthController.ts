@@ -72,6 +72,7 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
 export const isLoggedIn = async (req: Request, res: Response, next: NextFunction) => {
     if (req.session.user) {
         console.log(req.session.user)
+
         next()
     }
     else {
@@ -79,4 +80,7 @@ export const isLoggedIn = async (req: Request, res: Response, next: NextFunction
     }
 }
 
+export const success = async (req: Request, res: Response, next: NextFunction) => {
+    return res.status(200).send("User is authenticated")
+}
 

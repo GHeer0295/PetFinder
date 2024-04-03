@@ -21,5 +21,5 @@ export async function getUserProfile() {
         throw new Error("Could not receive profile")
     }
 
-    return res.json() as Promise<User>
+    return res.json() as Promise<User[]>
 }
