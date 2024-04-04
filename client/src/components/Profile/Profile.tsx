@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { Form, useNavigate} from "react-router-dom";
 import { logout } from "../../services/authService"
-import { getUserProfile, User } from "../../services/profileService"
+import { getUserProfile, updateUserProfile, User } from "../../services/profileService"
 import { profile } from 'console';
-
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 const Profile: React.FC = () => {
     const navigate = useNavigate()
@@ -17,6 +15,7 @@ const Profile: React.FC = () => {
     const [province, setProvince] = useState<string>('BC');
     const [city, setCity] = useState<string>('Vancouver');
     const [address, setAddress] = useState<string>('8888 University Dr W');
+    const [description, setDescription] = useState<string>('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut massa gravida, sagittis nisl a, gravida augue. Cras elementum rhoncus faucibus. Vivamus condimentum vehicula laoreet. Nunc tincidunt lacus ac viverra vehicula. Quisque tortor orci, aliquet quis sagittis at, posuere eu lorem. Nunc ullamcorper, erat vitae sodales volutpat, lorem augue elementum dui, ut volutpat leo sem lobortis orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum eget ultrices lectus, eget sodales ipsum. Maecenas egestas pulvinar sem, ac imperdiet lectus ornare gravida. Phasellus pharetra faucibus quam nec vestibulum. Nunc auctor velit dictum diam dapibus, sit amet eleifend orci pretium.');
 
     const getProfile = async () => {
         try {
@@ -29,7 +28,8 @@ const Profile: React.FC = () => {
 
             setProvince(profileInfo[0].province)
             setCity(profileInfo[0].city)
-
+            setAddress(profileInfo[0].address)
+            setDescription(profileInfo[0].description)
         }
         catch(e) {
             console.log(e)
@@ -42,57 +42,62 @@ const Profile: React.FC = () => {
       }, []);
 
     
-    const handleEdit = () => {
+    const handleEdit = async () => {
+        if (isEdit) {
+            try {
+                const userUpdate: any = {
+                    description: description
+                }
+                await updateUserProfile(userUpdate)
+            }
+
+            catch(e) {
+                console.log(e)
+            }
+
+        }
+        
         setIsEdit(!isEdit)
     }
 
-    const Item: React.FC<{name:string | number}> = ({name}) => {
+    const EditableItem: React.FC<{name:string | number}> = ({name}) => {
         if (!isEdit) {
             return <p>{name}</p>
         }
-        return <input className='border border-gray-300 text-gray-900 rounded w-full' value={name}></input>
+        return <textarea className='border border-gray-300 text-gray-900 rounded w-full' maxLength={500} value={name} onChange={(e) => setDescription(e.target.value)}/>
     }
     
     return (
-        <div className='flex justify-center items-center'>
+        <div className='flex justify-center items-center mb-5'>
             <div className='flex flex-row flex-wrap w-1/2'>
                 <div className='basis-full flex justify-center mt-3'>
                     <img className='rounded-full w-64 h-64 object-cover border-4 hover:shadow-md' src='https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D'></img>
                 </div>
                 <div className='basis-full mt-3'>
                 <p className='font-bold'>Name:</p>
-                <Item
-                    name={firstName + " " + lastName}
-                />
+                <p>{firstName} {lastName}</p>
                 </div>
                 <div className='basis-1/2 mt-3'>
                 <p className='font-bold'>Age:</p>
-                <Item
-                    name={age}
-                />
+                <p>{age}</p>
                 </div>
                 <div className='basis-1/2 mt-3'>
                 <p className='font-bold'>Email:</p>
-                <Item
-                    name={email}
-                />               
+                <p>{email}</p>        
                 </div>                
                 <div className='basis-1/2 mt-3'>
                 <p className='font-bold'>Address:</p>
-                <Item
-                    name={address}
-                />              
+                <p>{address}</p>              
                 </div>
                 <div className='basis-1/2 mt-3'>
                 <p className='font-bold'>City:</p>
-                <Item
-                    name={city}
-                />              
+                <p>{city} {province}</p>      
                 </div>
-                <div className='basis-1/2 mt-3'>
-                <p className='font-bold'>Province:</p>
-                <Item
-                    name={province}
+
+                <div className='basis-full mt-5'>
+                <p className='font-bold'>Description:</p>
+                <EditableItem
+                    name={description}
                 />              
                 </div>
 

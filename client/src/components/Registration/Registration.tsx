@@ -21,8 +21,9 @@ const Registration: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const split = location.split(',')
-
+        console.log(location)
+        const split: string[] = location.label.split(', ')
+        console.log(split)
         const newUser: NewUser = {
             username: username,
             password: password,
@@ -92,7 +93,7 @@ const Registration: React.FC = () => {
                 <div className='mb-4'>
                     <label className='mb-2 font-semibold text-left block'>Location</label>
                     <GooglePlacesAutocomplete
-                    apiKey="AIzaSyBS8EilTLRV90bKQLNQU2sAseMPrINlIBw"
+                    apiKey=""
                     apiOptions={{ region: 'ca' }}
                     selectProps={{
                         value: location,

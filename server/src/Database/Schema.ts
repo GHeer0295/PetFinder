@@ -30,7 +30,7 @@ export const users = pgTable('users', {
     address: varchar('address', { length: 256 }),
     province: provinceEnum('province'),
     description: varchar('description', { length: 256 }),
-    city: varchar('city', { length: 256 }),
+    city: varchar('city', { length: 500 }),
     createdAt: pgTimestamp()
 });
 

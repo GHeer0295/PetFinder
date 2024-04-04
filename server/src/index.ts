@@ -7,7 +7,7 @@ import * as socketIO from "socket.io";
 import { conversationRouter } from "./Routes/ConversationRoute";
 import { messageRouter } from "./Routes/MessageRoute";
 import { authRouter } from "./Routes/AuthRoute";
-import { profileRouter } from "./Routes/ProfileRoute";
+import { profileRouter } from "./Routes/UserRoute";
 
 import session from 'express-session'
 import { searchRouter } from "./Routes/SearchRoute";
