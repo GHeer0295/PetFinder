@@ -30,7 +30,10 @@ const session_key = process.env.SECRET_KEY || 'secret_sauce'
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+  }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // const RedisStore = connectRedis(session)
