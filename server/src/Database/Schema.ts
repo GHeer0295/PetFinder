@@ -27,7 +27,9 @@ export const users = pgTable('users', {
     firstName: varchar('firstName', { length: 256 }).notNull(),
     lastName: varchar('lastName', { length: 256 }).notNull(),
     age: integer('age').notNull(),
+    address: varchar('address', { length: 256 }),
     province: provinceEnum('province'),
+    description: varchar('description', { length: 256 }),
     city: varchar('city', { length: 256 }),
     createdAt: pgTimestamp()
 });

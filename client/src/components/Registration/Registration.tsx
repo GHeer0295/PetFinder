@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import { Form, useNavigate} from "react-router-dom";
 import {register, NewUser} from "../../services/authService"
+
 import './Registration.css'
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 
 const Registration: React.FC = () => {
@@ -9,6 +11,7 @@ const Registration: React.FC = () => {
     const [firstName, setFirstname] = useState<string>('');
     const [lastName, setLastname] = useState<string>('');
     const [age, setAge] = useState<number>(18);
+    const [location, setLocation] = useState<any>('');
 
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -18,13 +21,18 @@ const Registration: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        const split = location.split(',')
+
         const newUser: NewUser = {
             username: username,
             password: password,
             firstName: firstName,
             lastName: lastName,
             age: age,
-            email: email
+            email: email,
+            address: split[0],
+            province: split[2],
+            city: split[1]
         }
 
         try {
@@ -34,11 +42,10 @@ const Registration: React.FC = () => {
         catch (e) {
             console.log(e)
         }
-
     }
 
     return (
-        <div className='flex justify-center items-center h-[90vh]'>
+        <div className='flex justify-center items-center mt-5'>
             <form onSubmit={handleSubmit}>
             <div className='mb-4'>
                     <label htmlFor='firstname' className='mb-2 font-semibold text-left block'>First Name</label>
@@ -81,6 +88,23 @@ const Registration: React.FC = () => {
                         min="18"
                         required
                         onChange={(e) => setAge(parseInt(e.target.value))} />
+                </div>
+                <div className='mb-4'>
+                    <label className='mb-2 font-semibold text-left block'>Location</label>
+                    <GooglePlacesAutocomplete
+                    apiKey="AIzaSyBS8EilTLRV90bKQLNQU2sAseMPrINlIBw"
+                    apiOptions={{ region: 'ca' }}
+                    selectProps={{
+                        value: location,
+                        onChange: setLocation,
+                    }}
+                    autocompletionRequest={{
+                        componentRestrictions: {
+                            country: ['ca'],
+                        },
+                        types: ['street_address']
+                    }}               
+                    />
                 </div>
                 <div className='mb-4'>
                     <label className='mb-2 font-semibold text-left block' htmlFor='username'>Username</label>

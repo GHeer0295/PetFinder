@@ -6,6 +6,10 @@ export type NewUser = {
     firstName: string,
     lastName: string,
     email: string,
+    province: string,
+    address: string,
+
+    city: string,
     age: number | string,
 }
 

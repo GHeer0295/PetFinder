@@ -4,17 +4,19 @@ import { logout } from "../../services/authService"
 import { getUserProfile, User } from "../../services/profileService"
 import { profile } from 'console';
 
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 const Profile: React.FC = () => {
     const navigate = useNavigate()
+    const [isEdit, setIsEdit] = useState<boolean>(false);
 
     const [email, setEmail] = useState<string>('test@gmail.com');
     const [firstName, setFirstname] = useState<string>('John');
     const [lastName, setLastname] = useState<string>('Smith');
-    const [age, setAge] = useState<number | string >('21');
-
+    const [age, setAge] = useState<number | string >(21);
     const [province, setProvince] = useState<string>('BC');
     const [city, setCity] = useState<string>('Vancouver');
+    const [address, setAddress] = useState<string>('8888 University Dr W');
 
     const getProfile = async () => {
         try {
@@ -36,19 +38,20 @@ const Profile: React.FC = () => {
     }
 
     useEffect(() => {
-        getProfile();
+        // getProfile();
       }, []);
 
-      const handleLogout = async(e: React.FormEvent) => {
-        try {
-            await logout();
-            navigate('/login')
-        }
+    
+    const handleEdit = () => {
+        setIsEdit(!isEdit)
+    }
 
-        catch(e) {
-            console.log(e)
+    const Item: React.FC<{name:string | number}> = ({name}) => {
+        if (!isEdit) {
+            return <p>{name}</p>
         }
-      }
+        return <input className='border border-gray-300 text-gray-900 rounded w-full' value={name}></input>
+    }
     
     return (
         <div className='flex justify-center items-center'>
@@ -58,30 +61,50 @@ const Profile: React.FC = () => {
                 </div>
                 <div className='basis-full mt-3'>
                 <p className='font-bold'>Name:</p>
-                    <p>{firstName} {lastName}</p>
+                <Item
+                    name={firstName + " " + lastName}
+                />
                 </div>
                 <div className='basis-1/2 mt-3'>
                 <p className='font-bold'>Age:</p>
-                    <p>{age}</p>
+                <Item
+                    name={age}
+                />
                 </div>
                 <div className='basis-1/2 mt-3'>
                 <p className='font-bold'>Email:</p>
-                    <p>{email}</p>
+                <Item
+                    name={email}
+                />               
+                </div>                
+                <div className='basis-1/2 mt-3'>
+                <p className='font-bold'>Address:</p>
+                <Item
+                    name={address}
+                />              
                 </div>
                 <div className='basis-1/2 mt-3'>
                 <p className='font-bold'>City:</p>
-                    <p>{city}</p>
+                <Item
+                    name={city}
+                />              
                 </div>
                 <div className='basis-1/2 mt-3'>
                 <p className='font-bold'>Province:</p>
-                    <p>{province}</p>
+                <Item
+                    name={province}
+                />              
                 </div>
+
+                <div className='basis-full mt-3'>
+                    <button className='mx-2 bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' onClick={handleEdit}>{isEdit ? "Save" : "Edit"}</button>
+                </div>
+
+                <div>
+
+            </div>
             </div>
             
-            {/* <h1>
-                Logged in!
-            </h1>
-            */}
         </div>
     );
 }
