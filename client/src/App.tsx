@@ -8,6 +8,8 @@ import Login from './components/Login/Login';
 import Register from './components/Registration/Registration';
 import Profile from './components/Profile/Profile';
 import Message from './components/Message/Message';
+import CreatePost from './components/CreatePost/CreatePost';
+import Post from './components/Post/Post';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path="/register" element={<Register/>}/>
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/message" element={<Message />} />
+          <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/posts" element={<Post />} />
         </Routes>
       </div>
     </BrowserRouter>
