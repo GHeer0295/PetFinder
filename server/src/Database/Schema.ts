@@ -36,7 +36,7 @@ export const users = pgTable('users', {
 
 export const accounts = pgTable('account', {
     authId: uuid('uid').primaryKey().defaultRandom(),
-    username: varchar('username', { length: 256 }).notNull(),
+    username: varchar('username', { length: 256 }).unique().notNull(),
     password: varchar('password', { length: 256 }).notNull()
 })
 
@@ -44,8 +44,6 @@ export const accountRelations = relations(accounts, ({ one }) => ({
     user: one(users),
   }));
   
-
-
 export const userRelations = relations(users, ({ one, many }) => ({
     pets: many(pets),
     adoptionPosts: many(adoptionPosts),
@@ -54,7 +52,8 @@ export const userRelations = relations(users, ({ one, many }) => ({
     interests: many(postInterests),
     rejects: many(postRejects),
     favourites: many(postFavourites),
-    conversations: many(conversations)
+    conversations: many(conversations),
+    userReviews: many(userReviews)
 }));
 
 export const pets = pgTable('pets', {
@@ -139,6 +138,28 @@ export const adoptionRequestRelations = relations(adoptionRequests, ({ one }) =>
         references: [users.uid]
     })
 }));
+
+export const userReviews = pgTable('userReviews', {
+    reviewId: uuid('reviewId').primaryKey().defaultRandom(),
+    rating: integer('rating'),
+    desc: text('desc').notNull(),
+    createdAt: pgTimestamp(),
+
+    userId: uuid('userId').notNull().references(() => users.uid, cascadeAction),
+    reviewerId: uuid('posterId').notNull().references(() => users.uid, cascadeAction)
+});
+
+export const userReviewsRelations = relations(userReviews, ({ one }) => ({
+    user: one(users, {
+        fields: [userReviews.userId],
+        references: [users.uid]
+    }),
+    reviewer: one(users, {
+        fields: [userReviews.reviewerId],
+        references: [users.uid]
+    })
+}));
+
 
 export const postReviews = pgTable('postReviews', {
     reviewId: uuid('reviewId').primaryKey().defaultRandom(),

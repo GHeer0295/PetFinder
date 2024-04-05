@@ -26,6 +26,21 @@ export async function getUserProfile() {
     return res.json() as Promise<User[]>
 }
 
+export async function getOtherUserProfile(username: any) {
+    const res = await fetch(API_URL + username, {
+        method: "GET",
+        headers: {
+            "Content-Type":"application/json",
+        }
+    }) 
+    
+    if (!res.ok) {
+        throw new Error("Could not receive profile")
+    }
+
+    return res.json() as Promise<User[]>
+}
+
 export async function updateUserProfile(data: User) {
     const auth_res = await fetch(API_URL, {
         method: "PATCH",

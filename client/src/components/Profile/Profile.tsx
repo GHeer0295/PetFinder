@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import { Form, useNavigate} from "react-router-dom";
+import { Form, useNavigate, useParams} from "react-router-dom";
 import { logout } from "../../services/authService"
-import { getUserProfile, updateUserProfile, User } from "../../services/profileService"
+import { getOtherUserProfile, getUserProfile, updateUserProfile, User } from "../../services/profileService"
 import { profile } from 'console';
 
 const Profile: React.FC = () => {
     const navigate = useNavigate()
+    const [isCurrentUser, setIsCurrentUser] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
     const [email, setEmail] = useState<string>('test@gmail.com');
@@ -16,7 +17,8 @@ const Profile: React.FC = () => {
     const [city, setCity] = useState<string>('Vancouver');
     const [address, setAddress] = useState<string>('8888 University Dr W');
     const [description, setDescription] = useState<string>('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut massa gravida, sagittis nisl a, gravida augue. Cras elementum rhoncus faucibus. Vivamus condimentum vehicula laoreet. Nunc tincidunt lacus ac viverra vehicula. Quisque tortor orci, aliquet quis sagittis at, posuere eu lorem. Nunc ullamcorper, erat vitae sodales volutpat, lorem augue elementum dui, ut volutpat leo sem lobortis orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum eget ultrices lectus, eget sodales ipsum. Maecenas egestas pulvinar sem, ac imperdiet lectus ornare gravida. Phasellus pharetra faucibus quam nec vestibulum. Nunc auctor velit dictum diam dapibus, sit amet eleifend orci pretium.');
-
+    let { username } = useParams()
+    
     const getProfile = async () => {
         try {
             let profileInfo = await getUserProfile()
@@ -37,9 +39,36 @@ const Profile: React.FC = () => {
         }   
     }
 
+    const getOtherProfile = async (data: string) => {
+        try {
+            let profileInfo = await getOtherUserProfile(data)
+            console.log(profileInfo)
+            setEmail(profileInfo[0].email)
+            setFirstname(profileInfo[0].firstName)
+            setLastname(profileInfo[0].lastName)
+            setAge(profileInfo[0].age)
+
+            setProvince(profileInfo[0].province)
+            setCity(profileInfo[0].city)
+            setAddress(profileInfo[0].address)
+            setDescription(profileInfo[0].description)
+        }
+        catch(e) {
+            console.log(e)
+            navigate('/login')
+        }   
+    }
+
     useEffect(() => {
-        // getProfile();
-      }, []);
+        if (username !== undefined) {
+            setIsCurrentUser(false)
+            //getOtherProfile(username!)
+        }
+        else {
+            setIsCurrentUser(true)
+            //getProfile();
+        }
+      }, [username]);
 
     
     const handleEdit = async () => {
@@ -64,7 +93,12 @@ const Profile: React.FC = () => {
         if (!isEdit) {
             return <p>{name}</p>
         }
-        return <textarea className='border border-gray-300 text-gray-900 rounded w-full' maxLength={500} value={name} onChange={(e) => setDescription(e.target.value)}/>
+        else if (isEdit && isCurrentUser) {
+            return <textarea className='border border-gray-300 text-gray-900 rounded w-full' maxLength={500} value={name} onChange={(e) => setDescription(e.target.value)}/>
+        }
+        else {
+            return null
+        }
     }
     
     return (
@@ -101,9 +135,12 @@ const Profile: React.FC = () => {
                 />              
                 </div>
 
-                <div className='basis-full mt-3'>
-                    <button className='mx-2 bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' onClick={handleEdit}>{isEdit ? "Save" : "Edit"}</button>
+                <div className='basis-full mt-5'>
+                    {isCurrentUser? <button className='mx-2 bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' onClick={handleEdit}>{isEdit? "Save" : "Edit"}</button> :
+                        <button className='mx-2 bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded'>Leave Review</button>}
                 </div>
+
+
 
                 <div>
 

@@ -18,6 +18,26 @@ export const getUserInformation = async (req: Request, res: Response, next: Next
     } 
 }
 
+export const getOtherUserInformation = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        let username = req.params.username
+        let result = await db.select({
+            email: users.email,
+            firstName: users.firstName,
+            lastName: users.lastName,
+            age: users.age,
+            address: users.address,
+            province: users.province,
+            description: users.description,
+            city: users.city,
+        }).from(users).innerJoin(accounts, eq(accounts.authId, users.authId)).where(eq(accounts.username, username))
+        return res.status(200).send(result)
+     }
+    catch(e) {
+         return res.status(400).send(e)
+    } 
+}
+
 export const updateUserInformation = async (req: Request, res: Response, next: NextFunction) => {
     try {
         let auth_id = req.session.user!
