@@ -8,7 +8,8 @@ export type User = {
     province: string,
     city: string,
     address: string,
-    description: string
+    description: string,
+    rating: number
 }
 
 export async function getUserProfile() {

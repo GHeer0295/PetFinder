@@ -10,6 +10,7 @@ const Profile: React.FC = () => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
     const [email, setEmail] = useState<string>('test@gmail.com');
+    const [rating, setRating] = useState<number>(5);
     const [firstName, setFirstname] = useState<string>('John');
     const [lastName, setLastname] = useState<string>('Smith');
     const [age, setAge] = useState<number | string >(21);
@@ -32,6 +33,8 @@ const Profile: React.FC = () => {
             setCity(profileInfo[0].city)
             setAddress(profileInfo[0].address)
             setDescription(profileInfo[0].description)
+            setRating(profileInfo[0].rating)
+
         }
         catch(e) {
             console.log(e)
@@ -100,12 +103,21 @@ const Profile: React.FC = () => {
             return null
         }
     }
+
+    const RatingIcons: React.FC = () => {
+        return <p>{'* '.repeat(Math.floor(rating))}</p>
+    }
     
     return (
         <div className='flex justify-center items-center mb-5'>
             <div className='flex flex-row flex-wrap w-1/2'>
                 <div className='basis-full flex justify-center mt-3'>
                     <img className='rounded-full w-64 h-64 object-cover border-4 hover:shadow-md' src='https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D'></img>
+                </div>
+                <div className='basis-full mt-3'>
+                <p className='font-bold'>Rating:</p>
+                <RatingIcons 
+                />
                 </div>
                 <div className='basis-full mt-3'>
                 <p className='font-bold'>Name:</p>
@@ -139,11 +151,7 @@ const Profile: React.FC = () => {
                     {isCurrentUser? <button className='mx-2 bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' onClick={handleEdit}>{isEdit? "Save" : "Edit"}</button> :
                         <button className='mx-2 bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded'>Leave Review</button>}
                 </div>
-
-
-
                 <div>
-
             </div>
             </div>
             
