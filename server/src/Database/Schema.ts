@@ -145,13 +145,13 @@ export const userReviews = pgTable('userReviews', {
     desc: text('desc').notNull(),
     createdAt: pgTimestamp(),
 
-    userId: uuid('userId').notNull().references(() => users.uid, cascadeAction),
-    reviewerId: uuid('posterId').notNull().references(() => users.uid, cascadeAction)
+    revieweeId: uuid('revieweeId').notNull().references(() => accounts.authId, cascadeAction),
+    reviewerId: uuid('reviewerId').notNull().references(() => accounts.authId, cascadeAction)
 });
 
 export const userReviewsRelations = relations(userReviews, ({ one }) => ({
-    user: one(users, {
-        fields: [userReviews.userId],
+    reviewee: one(users, {
+        fields: [userReviews.revieweeId],
         references: [users.uid]
     }),
     reviewer: one(users, {

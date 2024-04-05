@@ -6,7 +6,8 @@ import { SQLWrapper, eq } from 'drizzle-orm';
 
 declare module 'express-session' {
     interface SessionData {
-      user: string | SQLWrapper | undefined;
+      user: string | SQLWrapper | undefined,
+      name: string | SQLWrapper | undefined
     }
 }
 

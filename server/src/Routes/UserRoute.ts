@@ -2,9 +2,9 @@ import express from "express";
 import { getOtherUserInformation, getUserInformation, updateUserInformation } from "../Controller/UserController";
 import { isLoggedIn } from "../Controller/AuthController";
 
-export const profileRouter = express.Router();
+export const userRouter = express.Router();
 
-profileRouter.get('/', isLoggedIn, getUserInformation);
-profileRouter.get('/:username', isLoggedIn, getOtherUserInformation);
+userRouter.get('/', isLoggedIn, getUserInformation);
+userRouter.get('/:username', isLoggedIn, getOtherUserInformation);
 
-profileRouter.patch('/', isLoggedIn, updateUserInformation);
+userRouter.patch('/', isLoggedIn, updateUserInformation);

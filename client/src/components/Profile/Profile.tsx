@@ -62,11 +62,11 @@ const Profile: React.FC = () => {
     useEffect(() => {
         if (username !== undefined) {
             setIsCurrentUser(false)
-            //getOtherProfile(username!)
+            getOtherProfile(username!)
         }
         else {
             setIsCurrentUser(true)
-            //getProfile();
+            getProfile();
         }
       }, [username]);
 
