@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Form, useNavigate} from "react-router-dom";
 import {register, NewUser} from "../../services/authService"
 
@@ -93,7 +93,7 @@ const Registration: React.FC = () => {
                 <div className='mb-4'>
                     <label className='mb-2 font-semibold text-left block'>Location</label>
                     <GooglePlacesAutocomplete
-                    apiKey=""
+                    apiKey={process.env.REACT_APP_PLACES_API_KEY}
                     apiOptions={{ region: 'ca' }}
                     selectProps={{
                         value: location,

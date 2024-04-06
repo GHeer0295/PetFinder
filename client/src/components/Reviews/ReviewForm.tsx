@@ -12,13 +12,13 @@ const ReviewForm: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const review: any = {
-            rating: username,
+            rating: rating,
             desc: description,
         }
 
         try {
             await addReview(username!, review);
-            navigate('/login')
+            navigate('/')
         }
         catch (e) {
             console.log(e)

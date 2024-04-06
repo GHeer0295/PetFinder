@@ -10,7 +10,7 @@ export const ReviewList: React.FC = () => {
 
     const getUserReviews = async (data: string) => {
         try {
-            let results = await getReviews('')
+            let results = await getReviews(data)
             setReviews(results)
             console.log(reviews)
         }

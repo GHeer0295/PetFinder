@@ -29,7 +29,7 @@ const port = process.env.PORT || 8000;
 const session_key = process.env.SECRET_KEY || 'secret_sauce'
 
 let corsOptions = {
-    credentials: true
+    credentials: true,
 }
 
 app.use(express.json());

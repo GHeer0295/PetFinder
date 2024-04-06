@@ -11,6 +11,8 @@ export const addUserReviews = async (req: Request, res: Response, next: NextFunc
         let reviewerId: any = req.session.user!
         let username = req.params.username
 
+        console.log(username)
+
         if (username == req.session.name) {
             return res.status(401).json({error: "User attempted to review themselves"})
         }
@@ -26,14 +28,16 @@ export const addUserReviews = async (req: Request, res: Response, next: NextFunc
         return res.status(200).send(result)
     }
     catch(e) {
-         return res.status(400).send(e)
+        console.log(e)
+        return res.status(400).send(e)
     } 
 }
 
 export const getUserReviews = async (req: Request, res: Response, next: NextFunction) => {
     try {
         let username = req.params.username || req.session.name || ''
-
+        console.log(username)
+        console.log(req.params.username)
         const reviewer = alias(users, "reviewer")
         let result = await db.select({
             reviewerFirstName: reviewer.firstName,

@@ -22,9 +22,9 @@ export async function getReviews(username: any) {
     return res.json() as Promise<Review[]>
 }
 
-export async function addReview(user:string, data: any) {
-    const auth_res = await fetch(API_URL + data, {
-        method: "PATCH",
+export async function addReview(user: string, data: any) {
+    const auth_res = await fetch(API_URL + user, {
+        method: "POST",
         headers: {
             "Content-Type":"application/json",
         },

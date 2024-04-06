@@ -45,11 +45,11 @@ const Profile: React.FC = () => {
     useEffect(() => {
         if (username !== undefined) {
             setIsCurrentUser(false)
-            // getProfile(username)
+            getProfile(username)
         }
         else {
             setIsCurrentUser(true)
-            // getProfile('');
+            getProfile('');
         }
       }, [username]);
 
@@ -74,17 +74,6 @@ const Profile: React.FC = () => {
 
     const handleAddReview = async () => {
         navigate('reviews/add')
-    }
-    const EditableItem: React.FC<{name:string | number}> = ({name}) => {
-        if (!isEdit) {
-            return <p className=''>{name}</p>
-        }
-        else if (isEdit) {
-            return <textarea className='border border-gray-300 text-gray-900 rounded w-full text-start' maxLength={500} value={name} onChange={(e) => setDescription(e.target.value)}/>
-        }
-        else {
-            return null
-        }
     }
 
     const RatingIcons: React.FC = () => {

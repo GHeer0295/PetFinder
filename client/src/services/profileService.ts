@@ -29,7 +29,7 @@ export async function getUserProfile(username: any) {
 
 export async function updateUserProfile(data: User) {
     const auth_res = await fetch(API_URL, {
-        method: "PATCH",
+        method: "POST",
         headers: {
             "Content-Type":"application/json",
         },
