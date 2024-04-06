@@ -7,9 +7,11 @@ import SearchResults from './components/SearchResults/SearchResults'; // Import 
 import Login from './components/Login/Login';
 import Register from './components/Registration/Registration';
 import Profile from './components/Profile/Profile';
+
 import Message from './components/Message/Message';
 import React, {useState, useEffect} from 'react';
 import { AuthContext } from './contexts';
+import ReviewForm from './components/Reviews/ReviewForm';
 
 function App() {
   const [isAuth, setIsAuth] = useState<boolean>(false);
@@ -26,6 +28,7 @@ function App() {
           <Route path="/register" element={<Register/>}/>
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/profile/:username" element={<Profile/>}/>
+          <Route path="/profile/:username/reviews/add" element={<ReviewForm/>}/>
 
           <Route path="/message" element={<Message />} />
         </Routes>

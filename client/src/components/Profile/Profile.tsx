@@ -45,11 +45,11 @@ const Profile: React.FC = () => {
     useEffect(() => {
         if (username !== undefined) {
             setIsCurrentUser(false)
-            getProfile(username)
+            // getProfile(username)
         }
         else {
             setIsCurrentUser(true)
-            getProfile('');
+            // getProfile('');
         }
       }, [username]);
 
@@ -72,6 +72,9 @@ const Profile: React.FC = () => {
         setIsEdit(!isEdit)
     }
 
+    const handleAddReview = async () => {
+        navigate('reviews/add')
+    }
     const EditableItem: React.FC<{name:string | number}> = ({name}) => {
         if (!isEdit) {
             return <p className=''>{name}</p>
@@ -127,7 +130,7 @@ const Profile: React.FC = () => {
 
                     <div className='basis-full mt-4'>
                         {isCurrentUser? <button className='mx-2 bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' onClick={handleEdit}>{isEdit? "Save" : "Edit"}</button> :
-                            <button className='mx-2 bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded'>Leave Review</button>}
+                            <button className='mx-2 bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' onClick={handleAddReview}>Leave Review</button>}
                     </div>
                 </div>
             </div>

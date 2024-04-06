@@ -21,3 +21,19 @@ export async function getReviews(username: any) {
 
     return res.json() as Promise<Review[]>
 }
+
+export async function addReview(user:string, data: any) {
+    const auth_res = await fetch(API_URL + data, {
+        method: "PATCH",
+        headers: {
+            "Content-Type":"application/json",
+        },
+        body: JSON.stringify(data)
+    }) 
+
+    if (!auth_res.ok) {
+        throw new Error("Unable to add review for " + user)
+    }
+
+    console.log(auth_res)
+}
