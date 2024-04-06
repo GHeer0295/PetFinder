@@ -11,6 +11,10 @@ export const addUserReviews = async (req: Request, res: Response, next: NextFunc
         let reviewerId: any = req.session.user!
         let username = req.params.username
 
+        if (username == req.session.name) {
+            return res.status(401).json({error: "User attempted to review themselves"})
+        }
+
         let revieweeResults = await db.select({auth_id: accounts.authId}).from(accounts).where(eq(accounts.username, username))
         let revieweeId = revieweeResults[0].auth_id
 
