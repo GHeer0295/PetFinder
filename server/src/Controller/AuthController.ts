@@ -2,11 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { db } from "../Database/Database";
 import bcrypt from 'bcrypt'
 import { accounts, users } from '../Database/Schema'
-import { eq } from 'drizzle-orm';
+import { SQLWrapper, eq } from 'drizzle-orm';
 
 declare module 'express-session' {
     interface SessionData {
-      user: string;
+      user: string | SQLWrapper | undefined;
     }
 }
 
@@ -72,11 +72,15 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
 export const isLoggedIn = async (req: Request, res: Response, next: NextFunction) => {
     if (req.session.user) {
         console.log(req.session.user)
-        return res.status(200).send("User is authenticated")
+
+        next()
     }
     else {
         return res.status(403).send("User not authenticated")
     }
 }
 
+export const success = async (req: Request, res: Response, next: NextFunction) => {
+    return res.status(200).send("User is authenticated")
+}
 
