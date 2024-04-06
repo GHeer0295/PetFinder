@@ -45,11 +45,11 @@ const Profile: React.FC = () => {
     useEffect(() => {
         if (username !== undefined) {
             setIsCurrentUser(false)
-            // getProfile(username)
+            getProfile(username)
         }
         else {
             setIsCurrentUser(true)
-            // getProfile('');
+            getProfile('');
         }
       }, [username]);
 
@@ -76,7 +76,7 @@ const Profile: React.FC = () => {
         if (!isEdit) {
             return <p className=''>{name}</p>
         }
-        else if (isEdit && isCurrentUser) {
+        else if (isEdit) {
             return <textarea className='border border-gray-300 text-gray-900 rounded w-full text-start' maxLength={500} value={name} onChange={(e) => setDescription(e.target.value)}/>
         }
         else {
@@ -122,9 +122,7 @@ const Profile: React.FC = () => {
 
                     <div className='basis-full mt-4'>
                     <p className='font-bold'>Description:</p>
-                    <EditableItem
-                        name={description}
-                    />              
+                        {!isEdit? <p className=''>{description}</p> : <input className='border border-gray-300 text-gray-900 rounded w-full text-start' name='description' value={description} onChange={(e) => setDescription(e.target.value)} />}
                     </div>
 
                     <div className='basis-full mt-4'>

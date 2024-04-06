@@ -9,7 +9,7 @@ export const ReviewComponent: React.FC<{review: Review}> = ({review}) => {
                 <p>{review.reviewerFirstName} {review.reviewerLastName}</p>
             </div>
             <div className='mt-2'>
-                <p>{review.rating}</p>
+                <p>{'* '.repeat(review.rating)}</p>
             </div>
             <div className='basis-full mt-2'>
                 <p className='break-words font-light'>{review.desc}</p>

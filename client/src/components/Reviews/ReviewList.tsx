@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import { getReviews, Review } from '../../services/reviewService';
 import { ReviewComponent } from './Review';
+import { useParams } from 'react-router-dom';
 
 export const ReviewList: React.FC = () => {
     const [reviews, setReviews] = useState<Review[]>([]);
+    const [isCurrentUser, setIsCurrentUser] = useState<boolean>(false);
+    let { username } = useParams()
 
     const getUserReviews = async (data: string) => {
         try {
@@ -17,8 +20,15 @@ export const ReviewList: React.FC = () => {
     }
     
     useEffect(() => {
-        // getUserReviews('')
-      }, []);
+        if (username !== undefined) {
+            setIsCurrentUser(false)
+            getUserReviews(username)
+        }
+        else {
+            setIsCurrentUser(true)
+            getUserReviews('');
+        }
+      }, [username]);
 
       const testReviews = [
         {
@@ -35,8 +45,7 @@ export const ReviewList: React.FC = () => {
         },
 
     ]
-    const listItems = testReviews.map(review => <ReviewComponent review={review} />);
-
+    const listItems = reviews.map(review => <ReviewComponent review={review} />);
     return (
         <div className='flex border-l-2 justify-center m-2 basis-1/4 w-1/4'>
             <div className='py-5 overflow-y-scroll max-h-lvh max-w-lvh'>
