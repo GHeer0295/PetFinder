@@ -6,3 +6,4 @@ export const reviewRouter: Router = express.Router();
 
 reviewRouter.post('/:username', isLoggedIn, addUserReviews);
 reviewRouter.get('/:username', isLoggedIn, getUserReviews);
+reviewRouter.get('/', isLoggedIn, getUserReviews);

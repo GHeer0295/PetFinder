@@ -28,7 +28,8 @@ export const addUserReviews = async (req: Request, res: Response, next: NextFunc
 
 export const getUserReviews = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        let username = req.params.username
+        let username = req.params.username || req.session.name || ''
+
         const reviewer = alias(users, "reviewer")
         let result = await db.select({
             reviewerFirstName: reviewer.firstName,

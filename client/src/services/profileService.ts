@@ -12,22 +12,7 @@ export type User = {
     rating: number
 }
 
-export async function getUserProfile() {
-    const res = await fetch(API_URL, {
-        method: "GET",
-        headers: {
-            "Content-Type":"application/json",
-        }
-    }) 
-    
-    if (!res.ok) {
-        throw new Error("Could not receive profile")
-    }
-
-    return res.json() as Promise<User[]>
-}
-
-export async function getOtherUserProfile(username: any) {
+export async function getUserProfile(username: any) {
     const res = await fetch(API_URL + username, {
         method: "GET",
         headers: {

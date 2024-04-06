@@ -22,8 +22,8 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         const passwordMatch = await bcrypt.compare(password, result[0].password);
         if (passwordMatch){
             req.session.user = result[0].authId
-            console.log(req.session.user)
-
+            req.session.name = result[0].username
+            console.log(req.session.name)
             res.status(200).send("Login success!")
             next()
         }
