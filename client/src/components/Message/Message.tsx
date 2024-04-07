@@ -124,8 +124,14 @@ const Message: React.FC = () => {
   // on login, must join all convesation rooms to recieve messages in real time
   useEffect(() => {
     const getUser = async () => {
-      let profile = await getUserProfile();
-      setUser(profile[0].uid);
+
+      try {
+        let profile = await getUserProfile();
+        setUser(profile[0].uid);
+      } catch(error) {
+        console.log(error);
+        navigate("/login");
+      }
     }
 
     getUser();
