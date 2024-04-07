@@ -6,7 +6,7 @@ import { IconContext } from "react-icons";
 import { FaUserCircle } from "react-icons/fa";
 import { isLoggedIn, logout } from "../../services/authService";
 import { AuthContext } from "../../contexts";
-
+import { FaList } from "react-icons/fa";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -51,6 +51,34 @@ const Header: React.FC = () => {
     return null
   }
 
+  useEffect(() => {
+    const postButton = () => {
+      const buttonDiv = document.getElementById("post-icon");
+
+      if(authContext?.isAuth && buttonDiv) {
+        buttonDiv.style.display = "block";
+      }  
+    }
+
+    postButton();
+  }, []);
+
+  const Post: React.FC | null = () => {
+
+    if(authContext?.isAuth) {
+      return (
+        <IconContext.Provider value={{ color: "black", size: "35px" }}>
+        <a href="/posts">
+          <div>
+            <FaList />
+          </div>
+        </a>
+      </IconContext.Provider>
+      )
+    }
+
+    return null;
+  }
 
 
   return (
@@ -59,7 +87,9 @@ const Header: React.FC = () => {
           <img src={logo} alt="Logo" className="logo" />
           
           <div className="flex flex-row items-center">
-
+            <div className="post-icon">
+              <Post />
+            </div>
             <div className="user-icon">
               <IconContext.Provider value={{ color: "black", size: "35px" }}>
                 <a href="/profile">

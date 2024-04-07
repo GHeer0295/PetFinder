@@ -6,7 +6,8 @@ import {
     pgEnum,
     uuid,
     timestamp,
-    ReferenceConfig
+    ReferenceConfig,
+    customType
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -20,6 +21,12 @@ const pgTimestamp = () => timestamp('createdAt', { mode: 'date', withTimezone: t
 const provinces = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'] as const;
 export const provinceEnum = pgEnum('province', provinces);
 
+const bytea = customType<{ data: string; notNull: false; default: false }>({
+    dataType() {
+      return "bytea";
+    }
+});
+
 export const users = pgTable('users', {
     uid: uuid('uid').primaryKey().defaultRandom(),
     authId: uuid('ownerId').notNull().references(() => accounts.authId, cascadeAction),
@@ -29,7 +36,7 @@ export const users = pgTable('users', {
     age: integer('age').notNull(),
     province: provinceEnum('province'),
     city: varchar('city', { length: 256 }),
-    createdAt: pgTimestamp()
+    createdAt: pgTimestamp(),
 });
 
 export const accounts = pgTable('account', {
@@ -41,7 +48,7 @@ export const accounts = pgTable('account', {
 export const accountRelations = relations(accounts, ({ one }) => ({
     user: one(users),
   }));
-  
+
 
 
 export const userRelations = relations(users, ({ one, many }) => ({
@@ -62,7 +69,8 @@ export const pets = pgTable('pets', {
     createdAt: pgTimestamp(),
     
     ownerId: uuid('ownerId').notNull().references(() => users.uid, cascadeAction),
-    speciesId: uuid('speciesId').notNull().references(() => species.speciesId, cascadeAction)
+    speciesId: uuid('speciesId').notNull().references(() => species.speciesId, cascadeAction),
+    petImage: bytea("petImage")
 });
 
 export const petRelations = relations(pets, ({ one, many }) => ({

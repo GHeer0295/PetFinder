@@ -32,11 +32,11 @@ export const getUserPosts = async (req: Request, res: Response, next: NextFuncti
 
 export const createPost = async(req: Request, res: Response, next: NextFunction) => {
     const postData = req.body;
-    const newPetUUID = uuid();
-    const newSpeciesUUID = uuid();
+    console.log("create post");
+    console.log(postData);
 
     const newSpecies: Species = {
-        speciesId: newSpeciesUUID,
+        speciesId: postData.newSpeciesUUID,
         name: postData.speciesName
     }
 
@@ -45,8 +45,9 @@ export const createPost = async(req: Request, res: Response, next: NextFunction)
         ownerId: postData.ownerId,
         age: parseInt(postData.age),
         createdAt: new Date(),
-        petId: newPetUUID,
-        speciesId: newSpeciesUUID
+        petId: postData.newPetUUID,
+        speciesId: postData.newSpeciesUUID,
+        petImage: postData.petImage
     }
 
     const newPost: AdoptionPost = {
@@ -57,7 +58,7 @@ export const createPost = async(req: Request, res: Response, next: NextFunction)
         province: postData.province,
         city: postData.city,
         userId: postData.ownerId,
-        petId: newPetUUID
+        petId: postData.newPetUUID
     }
 
     let response_Specices;
@@ -69,18 +70,19 @@ export const createPost = async(req: Request, res: Response, next: NextFunction)
         response_Pet  = await db.insert(pets).values(newPet).returning();
         response_Post = await db.insert(adoptionPosts).values(newPost).returning();
 
+        console.log("OKAY");
         res.json("OK");
     } catch(error) {
         console.log(`${error}. While trying to create a new post.`);
 
         if(response_Specices) {
             console.log("Incorrect insertion of a new specie. Deleteing")
-            await db.delete(species).where(eq(species.speciesId, newSpeciesUUID))
+            await db.delete(species).where(eq(species.speciesId, postData.newSpeciesUUID))
         }
 
         if(response_Pet) {
             console.log("Incorrect insertion of a new pet. Deleteing")
-            await db.delete(pets).where(eq(pets.petId, newPetUUID))
+            await db.delete(pets).where(eq(pets.petId, postData.newPetUUID))
         }
 
         if(response_Post) {
@@ -88,7 +90,7 @@ export const createPost = async(req: Request, res: Response, next: NextFunction)
             await db.delete(species).where(eq(adoptionPosts.adoptPostId, newPost.adoptPostId));
         }
 
-        res.status(400).json("Unable to create posts");
+        res.status(400).send("Unable to create posts");
     }
 }
 
@@ -101,5 +103,28 @@ export const deletePost = async(req: Request, res: Response, next: NextFunction)
     } catch(error) {
         console.log(error);
         res.status(400).json("Unable to delete post");
+    }
+}
+
+export const addImage = async(req: Request, res: Response, next: NextFunction) => {
+    console.log("adding image")
+    console.log(req.params.petUUID);
+
+    try {
+        const result = await db.update(pets).set({petImage: req.body}).where(eq(pets.petId, req.params.petUUID));
+        res.json(result);
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+export const getPetImage = async(req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.petUUID
+
+    try {
+        const result = await db.select().from(pets).where(eq(pets.petId, id));
+        res.json(result);
+    } catch(error) {
+        console.log(error);
     }
 }

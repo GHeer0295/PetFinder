@@ -1,5 +1,9 @@
-import React, { ChangeEvent, useState } from 'react';
+import { readFile, readFileSync } from 'fs';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { v4 as uuidv4 } from 'uuid';
+import { isLoggedIn } from '../../services/authService';
+import { getUserProfile } from '../../services/profileService';
 
 type AdoptionPost = {
     desc: string,
@@ -24,17 +28,34 @@ const CreatePost: React.FC = () => {
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [province, setProvince] = useState<string >('');
-    const [image, setImage] = useState<File | null>(null);
+    const [image, setImage] = useState<File>();
     const [age, setAge] = useState<number | string >('');
     const [species, setSpecies] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [user, setUser] = useState<string>('');
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const getUser = async () => {
+
+            try {
+                await isLoggedIn();
+                let res = await getUserProfile();
+                console.log(res[0].uid);
+                setUser(res[0].uid)
+            } catch(error) {
+                console.log(error);
+                navigate("/login");
+            }
+        }
+
+        getUser();
+    }, [])
 
     const handleSubmit = async (e: React.FormEvent) => {
-        setUser("d5666fd0-a9e4-4878-a12d-02ea8a8f2c8a");
-
+        const newPetUUID = uuidv4();
+        const newSpeciesUUID = uuidv4();
         e.preventDefault();
 
         const data : any = {
@@ -46,29 +67,47 @@ const CreatePost: React.FC = () => {
             title: title,
             city: city,
             province: province,
+            newPetUUID: newPetUUID,
+            newSpeciesUUID: newSpeciesUUID
         }
 
-        const res = await fetch("http://localhost:8000/api/post/create", {
-            method: "POST",
-            headers: {
-                "Content-Type":"application/json",
-            },
-            body: JSON.stringify(data)
-        })
+        try {
+            const res = await fetch("http://localhost:8000/api/post/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type":"application/json",
+                },
+                body: JSON.stringify(data)
+            });
 
-        if (!res.ok) {
-            throw new Error("Unable to create new user")
+            if(!res.ok) {
+                throw new Error("unable to save pet");
+            }
+
+            const imageRes = await fetch(`http://localhost:8000/api/post/image/${newPetUUID}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "image/jpeg"
+                },
+                body: image
+            });
+
+            if(!imageRes.ok) {
+                throw new Error("unable to save image");
+            }
+
+            navigate("/posts");
+        } catch(error) {
+            console.log(error);
         }
-
-        console.log(res);
     }
 
-    const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
+    const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0] as File;
 
-        // Validate file type if needed
-        // For now, just set the selected image to state
-        setImage(file || null);
+        const petId = uuidv4()
+        const newFile = new File([file], petId, {type: file.type});
+        setImage(newFile);
       };
     
 
@@ -154,6 +193,7 @@ const CreatePost: React.FC = () => {
                         accept="image/*"
                         className=' border border-gray-300 text-gray-900 rounded w-full'
                         name='image'
+                        required
                         onChange={handleImageChange} />
                 </div>
                 <button className='bg-custom-red hover:bg-custom-red-dark py-2 px-4 text-white rounded' type='submit'>Post</button>
