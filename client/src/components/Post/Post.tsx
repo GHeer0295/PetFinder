@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { User, getUserProfile } from "../../services/profileService";
 import "./Post.css"
 
 type AdoptionPost = {
@@ -14,9 +15,17 @@ const Post: React.FC = () => {
     const [user, setUser] = useState<string>('');
 
     useEffect(() => {
+        const getUser = async () => {
+            let res = await getUserProfile();
+            setUser(res[0].uid)
+        }
+
+        getUser();
+    }, [])
+
+    useEffect(() => {
         const getPosts = async() => {
-            console.log(user);
-            const res = await fetch(`http://localhost:8000/api/post/user/05fe263c-82a8-4a33-a2de-66aa02250706`, {
+            const res = await fetch(`http://localhost:8000/api/post/user/${user}`, {
                 method: "GET",
                 headers: {
                     "Content-Type":"application/json",
@@ -30,39 +39,21 @@ const Post: React.FC = () => {
             const data = await res.json()
             setPosts(data);
         }
-
+        
         getPosts();
-    }, [])
+    }, [user])
 
     const handleClick = (post: AdoptionPost) => {
+        setCurPost(post);
         const postContainer: HTMLElement | null = document.getElementById("content");
         if(postContainer) {
-            while (postContainer.firstChild) {
-                postContainer.removeChild(postContainer.firstChild);
-            }
-
-            const titleElement: HTMLHeadingElement = document.createElement('h2');
-            titleElement.textContent = post.title;
-
-            const cityElement: HTMLParagraphElement = document.createElement('p');
-            cityElement.textContent = `City: ${post.city}`;
-
-            const descElement: HTMLParagraphElement = document.createElement('p');
-            descElement.textContent = `Description: ${post.desc}`;
-
-            const provinceElement: HTMLParagraphElement = document.createElement('p');
-            provinceElement.textContent = `Province: ${post.province}`;
-
-            postContainer.appendChild(titleElement);
-            postContainer.appendChild(cityElement);
-            postContainer.appendChild(descElement);
-            postContainer.appendChild(provinceElement);
+            postContainer.style.display = "block"
         }
     }
 
     return (
         <div>
-             <div className="sidebar">
+            <div className="sidebar">
                 <ul>
                     {posts.map((post) => (
                         <li onClick={() => {handleClick(post)}}>{post.title}</li>
@@ -70,12 +61,25 @@ const Post: React.FC = () => {
                 </ul>
             </div>
 
-            <div className="main-content" id="main-content">
-                <div id='content'>
-                    <h2>{curPost?.title}</h2>
-                    <p>{curPost?.city}</p>
-                    <p>{curPost?.desc}</p>
-                    <p>{curPost?.province}</p>
+            <div id='content' style={{display: "none"}}>
+                <div className='flex justify-center items-center'>
+                    <div className='flex flex-row flex-wrap w-1/2'>
+                        <div className='basis-full flex justify-center mt-3'>
+                            <img className='rounded-full w-64 h-64 object-cover border-4 hover:shadow-md' src='https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D'></img>
+                        </div>
+                        <div className='basis-full mt-3'>
+                            <p className='font-bold'>Title:</p>
+                            <p>{curPost?.title}</p>
+                        </div>
+                        <div className='basis-1/2 mt-3'>
+                            <p className='font-bold'>Description:</p>
+                            <p>{curPost?.desc}</p>
+                        </div>
+                        <div className='basis-1/2 mt-3'>
+                            <p className='font-bold'>City:</p>
+                            <p>{curPost?.city}, {curPost?.province}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

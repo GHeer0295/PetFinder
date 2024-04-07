@@ -6,7 +6,8 @@ export type User = {
     email: string,
     age: number | string,
     province: string,
-    city: string
+    city: string,
+    uid: string
 }
 
 export async function getUserProfile() {

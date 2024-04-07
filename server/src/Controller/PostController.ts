@@ -4,29 +4,29 @@ import { AdoptionPost, adoptionPosts, Pet, species, Species, pets } from '../Dat
 import { Request, Response, NextFunction } from 'express';
 import { db } from '../Database/Database'
 
-export const getPost = async (req: Request, res: Response, next: NextFunction) => {
-    const postUUID = req.params.postUUID
-    console.log(`Request: getPost at ${req.url} with PostUUID: ${postUUID}`);
+// export const getPost = async (req: Request, res: Response, next: NextFunction) => {
+//     console.log(req.params)
+//     const postUUID = req.params.postUUID
+//     console.log(`Request: getPost at ${req.url} with PostUUID: ${postUUID}`);
 
-    try {
-        const data = await db.select().from(adoptionPosts).where(eq(adoptionPosts.adoptPostId, postUUID));
-        res.json(data);
-    } catch(error) {
-        console.log(`${error}. While trying to get post from Database.`);
-        res.send(400).json("Unable to get Post");
-    }
-}
+//     try {
+//         const data = await db.select().from(adoptionPosts).where(eq(adoptionPosts.adoptPostId, postUUID));
+//         res.json(data);
+//     } catch(error) {
+//         console.log(`${error}. While trying to get post from Database.`);
+//         res.sendStatus(400).send("Unable to get Post");
+//     }
+// }
 
 export const getUserPosts = async (req: Request, res: Response, next: NextFunction) => {
     const userUUID = req.params.userUUID;
-    console.log(userUUID);
     
     try {
         const data = await db.select().from(adoptionPosts).where(eq(adoptionPosts.userId, userUUID));
         res.json(data);
     } catch(error) {
         console.log(`${error}. While trying to get posts for user from Database.`);
-        res.send(400).json("Unable to get posts");
+        res.sendStatus(400).send("Unable to get posts");
     }
 }
 
