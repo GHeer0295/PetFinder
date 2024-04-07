@@ -2,10 +2,10 @@
   "name": "petfinder",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "build": "npx tsc",
-    "start": "node dist/index.js",
+    "build": "tsc",
+    "start": "node build/index.js",
     "dev": "nodemon src/index.ts",
     "migrate:generate": "drizzle-kit generate:pg --out ./drizzle --schema ./src/Database/Schema.ts",
     "migrate:push": "node -r esbuild-register ./src/Database/Migrate.ts ./drizzle",
