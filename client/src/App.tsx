@@ -8,11 +8,16 @@ import Login from './components/Login/Login';
 import Register from './components/Registration/Registration';
 import Profile from './components/Profile/Profile';
 import Message from './components/Message/Message';
+import React, {useState, useEffect} from 'react';
+import { AuthContext } from './contexts';
 
 function App() {
+  const [isAuth, setIsAuth] = useState<boolean>(false);
+
   return (
     <BrowserRouter>
       <div className="App">
+      <AuthContext.Provider value={{isAuth, setIsAuth}} >
         <Header />
         <Routes>
           <Route path="/" element={<Dashboard />} />
@@ -22,6 +27,7 @@ function App() {
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/message" element={<Message />} />
         </Routes>
+        </AuthContext.Provider>
       </div>
     </BrowserRouter>
   );
