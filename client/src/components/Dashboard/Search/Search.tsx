@@ -6,6 +6,7 @@ import SearchModal from "./SearchModal";
 import "./Search.css";
 
 import { pets, locations } from "./dummydata";
+import { getAvailableSpecies } from "../../../services/searchService";
 
 const Search = () => {
   const [petCategory, setPetCategory] = useState("");
@@ -19,10 +20,22 @@ const Search = () => {
   const [hoveredPetModalString, setHoveredPetString] = useState("");
   const [hoveredLocationModalString, setHoveredLocationString] = useState("");
 
+  const [availableSpecies, setAvailableSpecies] = useState<string[]>([]);
+
   const petInputRef = useRef<HTMLInputElement>(null);
   const locationInputRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
+
+  const fetchAvailableSpecies = async () => {
+    const availableSpeciesRes = await getAvailableSpecies();
+    if(!('error' in availableSpeciesRes))
+      setAvailableSpecies(availableSpeciesRes.data);
+  };
+
+  useEffect(() => {
+    fetchAvailableSpecies();
+  }, []);
 
   const focusInput = (inputRef: MutableRefObject<HTMLInputElement | null>) => {
     if (inputRef.current) {
@@ -127,7 +140,7 @@ const Search = () => {
         )}
         <SearchModal
           currentValue={petCategory}
-          searchResults={pets}
+          searchResults={availableSpecies}
           onSelectResult={setPetCategory}
           isHidden={!isPetFocused}
           hoveredIndex={hoveredPetModalIndex}
