@@ -12,6 +12,7 @@ import React, {useState, useEffect} from 'react';
 import { AuthContext } from './contexts';
 import CreatePost from './components/CreatePost/CreatePost';
 import Post from './components/Post/Post';
+import Interests from './components/Interests/Interests';
 
 function App() {
   const [isAuth, setIsAuth] = useState<boolean>(false);
@@ -30,6 +31,7 @@ function App() {
           <Route path="/message" element={<Message />} />
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/posts" element={<Post />} />
+          <Route path="/interests" element={<Interests />} />
         </Routes>
         </AuthContext.Provider>
       </div>

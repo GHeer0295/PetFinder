@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { SearchResponse } from '../Api/Search';
 import { db } from '../Database/Database';
-import { adoptionPosts, pets, species } from '../Database/Schema';
+import { adoptionPosts, pets, species, users } from '../Database/Schema';
 import { and, eq, ilike, notInArray, or } from 'drizzle-orm';
 import { caseUnreachable, createValidationError } from '../Util/Error';
 import { extractQueryByKeys, tryRun } from '../Util/Util';
@@ -59,7 +59,6 @@ export const searchPosts = (search: SearchPosts): Promise<Result<SearchResponse>
     const excludeUsersFilter = excludeUserIds.size > 0
         ? notInArray(adoptionPosts.userId, Array.from(excludeUserIds))
         : undefined;
-    
     const limit = search.pageSize ?? DefaultSearchPageSize;
     const offset = ((search.page ?? 1) - 1) * limit;
     const queryFilter = and(
@@ -67,7 +66,6 @@ export const searchPosts = (search: SearchPosts): Promise<Result<SearchResponse>
         // if strict search, use AND between search filters, else use OR
         search.strictSearch ? and(...searchFilters) : or(...searchFilters)
     );
-
     const searchQuery = db
         .select({
             postId: adoptionPosts.adoptPostId,
@@ -75,7 +73,9 @@ export const searchPosts = (search: SearchPosts): Promise<Result<SearchResponse>
             province: adoptionPosts.province,
             city: adoptionPosts.city,
             petName: pets.name,
-            speciesName: species.name
+            speciesName: species.name,
+            petImage: pets.petImage,
+            userId: adoptionPosts.userId
         })
         .from(adoptionPosts)
         .innerJoin(pets, eq(adoptionPosts.petId, pets.petId))
@@ -88,7 +88,11 @@ export const searchPosts = (search: SearchPosts): Promise<Result<SearchResponse>
 };
 
 export const getSearch = async (req: Request, res: Response): Promise<unknown> => {
-    const auth_id = req.session.user!
+    let auth_id = req.session.user!
+    if (!auth_id) {
+        return;
+    }
+    let [userInfo] = await db.select().from(users).where(eq(users.authId, auth_id))
 
     const { page, pageSize } = req.query;
     const searchFields = extractQueryByKeys(req.query, Object.values(SearchFields));
@@ -100,7 +104,7 @@ export const getSearch = async (req: Request, res: Response): Promise<unknown> =
     // run search with the provided search fields from req.query
     const searchResults = await searchPosts({
         strictSearch: true,
-        excludeUserIds: [String(auth_id)],
+        excludeUserIds: [String(userInfo.uid)],
         ...validationRes.data
     });
 

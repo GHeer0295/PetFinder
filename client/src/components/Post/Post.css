@@ -26,6 +26,7 @@
 .add-button {
     max-width: 200px;
     margin-left: auto;
+    margin-bottom: 30px;
 }
 
 .post {
@@ -41,5 +42,10 @@ ul {
     list-style: none; /* Remove default list styles */
     padding: 0; /* Remove default padding */
   }
+
+.post-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
   
   

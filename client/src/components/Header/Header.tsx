@@ -6,7 +6,7 @@ import { IconContext } from "react-icons";
 import { FaUserCircle } from "react-icons/fa";
 import { isLoggedIn, logout } from "../../services/authService";
 import { AuthContext } from "../../contexts";
-import { FaList } from "react-icons/fa";
+import { FaList, FaHeart } from "react-icons/fa";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -80,6 +80,19 @@ const Header: React.FC = () => {
     return null;
   }
 
+  const InterestsButton: React.FC | null = () => {
+    // if (authContext?.isAuth) {
+      return (
+        <IconContext.Provider value={{ color: "black", size: "35px" }}>
+        <a href="/interests">
+          <div>
+            <FaHeart />
+          </div>
+        </a>
+      </IconContext.Provider>
+      )
+    // }
+  }
 
   return (
     <header className="header-container">
@@ -87,6 +100,7 @@ const Header: React.FC = () => {
           <img src={logo} alt="Logo" className="logo" onClick={handleLogoClick}/>
           
           <div className="flex flex-row items-center">
+            <InterestsButton />
             <div className="post-icon">
               <Post />
             </div>

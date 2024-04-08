@@ -9,13 +9,14 @@ import img from "../../resources/sample-1.jpg";
 import img2 from "../../resources/sample-2.jpg";
 import img3 from "../../resources/sample-3.jpg";
 
-interface PetPost {
+export interface PetPost {
   city: string;
   petName: string;
   postId: string;
   province: string;
   speciesNName: string;
   title: string;
+  petImage: string;
 }
 
 interface SwipeableImageProps {
@@ -29,7 +30,7 @@ const SwipeableImage: React.FC<SwipeableImageProps> = ({ data }) => {
   const [skipRequirement, setSkipRequirement] = useState<boolean>(false);
   const [skipHovered, setSkipHovered] = useState<boolean>(false);
   const [likeHovered, setLikeHovered] = useState<boolean>(false);
-
+  console.log(data);
   const currentIndexRef = useRef<number>(currentIndex);
 
   const outOfFrame = (name: string, idx: number) => {
@@ -121,7 +122,7 @@ const SwipeableImage: React.FC<SwipeableImageProps> = ({ data }) => {
           >
             <div
               style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%), url(${img})`,
+                backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%), url(${character.petImage})`,
               }}
               className="card"
             >
@@ -133,8 +134,13 @@ const SwipeableImage: React.FC<SwipeableImageProps> = ({ data }) => {
     [data, hiddenCards, img]
   );
 
-  if (hiddenCards.length === data.length) {
-    return null;
+  if (hiddenCards.length === data.length || data.length === 0) {
+    return (
+      <div className="swipeable-container">
+        <h1 className="empty-results">No Search Results</h1>
+      </div>
+    )
+    
   }
 
   return (
@@ -158,7 +164,7 @@ const SwipeableImage: React.FC<SwipeableImageProps> = ({ data }) => {
         </IconContext.Provider>
         <IconContext.Provider
           value={{
-            color: likeRequirement || likeHovered ? "#21ff19" : "#ffffff",
+            color: likeRequirement || likeHovered ? "#97d672" : "#ffffff",
             size: "75px",
           }}
         >

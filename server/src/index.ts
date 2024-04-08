@@ -55,6 +55,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/search', searchRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/post', postRouter);
+app.use('/api/interests', )
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
