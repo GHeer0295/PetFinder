@@ -18,6 +18,13 @@
     padding-left: 4rem;
     padding-top: 1rem;
     width: auto;
+<<<<<<< HEAD
+=======
+} 
+
+    /* height: 95px; */
+    width:auto;
+>>>>>>> 74e9c7e734c138195015d6a2b15222acae07e67c
 } 
 
 .message-icon {
@@ -28,4 +35,9 @@
 
 .post-icon {
     padding-right: 10px;
+
+.message-icon {
+    padding-top: 1rem;
+    width: auto;
+    margin-left: auto;
 }
