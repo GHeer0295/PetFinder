@@ -25,7 +25,7 @@ const io: socketIO.Server = new socketIO.Server();
 let conversationRooms = new Set();
 io.attach(server);
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 80;
 const session_key = process.env.SECRET_KEY || 'secret_sauce'
 
 
