@@ -88,7 +88,7 @@ export const searchPosts = (search: SearchPosts): Promise<Result<SearchResponse>
 };
 
 export const getSearch = async (req: Request, res: Response): Promise<unknown> => {
-    // TODO: get uid from auth session and exclude the user's posts from the search results
+    const auth_id = req.session.user!
 
     const { page, pageSize } = req.query;
     const searchFields = extractQueryByKeys(req.query, Object.values(SearchFields));
@@ -100,6 +100,7 @@ export const getSearch = async (req: Request, res: Response): Promise<unknown> =
     // run search with the provided search fields from req.query
     const searchResults = await searchPosts({
         strictSearch: true,
+        excludeUserIds: [String(auth_id)],
         ...validationRes.data
     });
 

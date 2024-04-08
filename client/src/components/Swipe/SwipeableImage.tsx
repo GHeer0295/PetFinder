@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState, useEffect, useContext } from "react";
 import TinderCard from "react-tinder-card";
 import "./SwipeableImage.css";
 import { IoHeartCircleOutline } from "react-icons/io5";
@@ -9,32 +9,21 @@ import img from "../../resources/sample-1.jpg";
 import img2 from "../../resources/sample-2.jpg";
 import img3 from "../../resources/sample-3.jpg";
 
-interface Character {
-  name: string;
-  url: string;
+interface PetPost {
+  city: string;
+  petName: string;
+  postId: string;
+  province: string;
+  speciesNName: string;
+  title: string;
 }
 
-const db: Character[] = [
-  {
-    name: "Erlich",
-    url: img,
-  },
-  {
-    name: "Monica",
-    url: img2,
-  },
-  {
-    name: "Jared",
-    url: img3,
-  },
-  {
-    name: "Dinesh",
-    url: img,
-  },
-];
+interface SwipeableImageProps {
+  data: PetPost[];
+}
 
-const SwipeableImage: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState<number>(db.length - 1);
+const SwipeableImage: React.FC<SwipeableImageProps> = ({ data }) => {
+  const [currentIndex, setCurrentIndex] = useState<number>(data.length - 1);
   const [hiddenCards, setHiddenCards] = useState<string[]>([]);
   const [likeRequirement, setLikeRequirement] = useState<boolean>(false);
   const [skipRequirement, setSkipRequirement] = useState<boolean>(false);
@@ -65,7 +54,7 @@ const SwipeableImage: React.FC = () => {
   };
 
   const childRefs = useRef<Array<React.RefObject<API>>>(
-    Array(db.length)
+    Array(data.length)
       .fill(0)
       .map(() => React.createRef<API>())
   );
@@ -75,7 +64,6 @@ const SwipeableImage: React.FC = () => {
     currentIndexRef.current = val;
   };
 
-  const canGoBack = currentIndex < db.length - 1;
 
   const canSwipe = currentIndex >= 0;
 
@@ -89,7 +77,7 @@ const SwipeableImage: React.FC = () => {
   };
 
   const swipe = async (dir: Direction) => {
-    if (canSwipe && currentIndex < db.length) {
+    if (canSwipe && currentIndex < data.length) {
       await childRefs.current[currentIndex].current?.swipe(dir);
     }
   };
@@ -112,16 +100,16 @@ const SwipeableImage: React.FC = () => {
 
   const tinderCards = useMemo(
     () =>
-      db.map((character, index) => {
-        if (hiddenCards.includes(character.name)) return null;
+      data.map((character, index) => {
+        if (hiddenCards.includes(character.petName)) return null;
         return (
           <TinderCard
             ref={childRefs.current[index]}
             className="swipe"
-            key={character.name}
+            key={character.postId}
             preventSwipe={["up", "down"]}
-            onSwipe={(dir) => swiped(dir, character.name, index)}
-            onCardLeftScreen={() => outOfFrame(character.name, index)}
+            onSwipe={(dir) => swiped(dir, character.petName, index)}
+            onCardLeftScreen={() => outOfFrame(character.petName, index)}
             onSwipeRequirementFulfilled={(dir) =>
               handleSwipeRequirementFulfilled(dir)
             }
@@ -133,19 +121,19 @@ const SwipeableImage: React.FC = () => {
           >
             <div
               style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%), url(${character.url})`,
+                backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%), url(${img})`,
               }}
               className="card"
             >
-              <h1>{character.name}</h1>
+              <h1>{character.petName}</h1>
             </div>
           </TinderCard>
         );
       }),
-    [db, hiddenCards, img]
+    [data, hiddenCards, img]
   );
 
-  if (hiddenCards.length === db.length) {
+  if (hiddenCards.length === data.length) {
     return null;
   }
 
