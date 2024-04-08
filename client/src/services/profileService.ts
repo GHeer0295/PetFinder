@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/api/profile/'
+const API_URL = 'http://localhost:8000/api/profile/'
 
 export type User = {
     firstName: string,
@@ -7,9 +7,7 @@ export type User = {
     age: number | string,
     province: string,
     city: string,
-    address: string,
-    description: string,
-    rating: number
+    uid?: string
 }
 
 export async function getUserProfile(username: any) {
@@ -17,7 +15,8 @@ export async function getUserProfile(username: any) {
         method: "GET",
         headers: {
             "Content-Type":"application/json",
-        }
+        },
+        credentials: "include"
     }) 
     
     if (!res.ok) {
