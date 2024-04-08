@@ -68,7 +68,7 @@ const Header: React.FC = () => {
 
     if(authContext?.isAuth) {
       return (
-        <IconContext.Provider value={{ color: "black", size: "35px" }}>
+        <IconContext.Provider value={{ color: "black", size: "30px" }}>
         <a href="/posts">
           <div>
             <FaList />
@@ -81,51 +81,36 @@ const Header: React.FC = () => {
     return null;
   }
 
-
   return (
     <header className="header-container">
       <div className="header-content">
           <img src={logo} alt="Logo" className="logo" />
-<<<<<<< HEAD
-          <div className="message-icon">
-            <IconContext.Provider value={{ color: "black", size: "35px" }}>
-              <a href="/message">
-=======
 
           <div className="flex flex-row items-center">
             <div className="post-icon">
               <Post />
             </div>
+
+            <div className="message-icon">
+              <IconContext.Provider value={{ color: "black", size: "35px" }}>
+                <a href="/message">
+
+                    <div>
+                      <LuMessagesSquare/>
+                    </div>
+                </a>
+              </IconContext.Provider>
+            </div>
+            
             <div className="user-icon">
               <IconContext.Provider value={{ color: "black", size: "35px" }}>
                 <a href="/profile">
-
-          <div className="message-icon">
-            <IconContext.Provider value={{ color: "black", size: "35px" }}>
-              <a href="/message">
-
->>>>>>> 74e9c7e734c138195015d6a2b15222acae07e67c
                   <div>
-                    <LuMessagesSquare/>
+                    <FaUserCircle />
                   </div>
-              </a>
-            </IconContext.Provider>
-          </div>
-<<<<<<< HEAD
-                      <div className="post-icon">
-              <Post />
+                </a>
+              </IconContext.Provider>
             </div>
-=======
-          
->>>>>>> 74e9c7e734c138195015d6a2b15222acae07e67c
-          <div className="user-icon">
-            <IconContext.Provider value={{ color: "black", size: "35px" }}>
-              <a href="/profile">
-                <div>
-                  <FaUserCircle />
-                </div>
-              </a>
-            </IconContext.Provider>
           </div>
       </div>
     </header>

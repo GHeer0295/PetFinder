@@ -24,7 +24,7 @@ const Post: React.FC = () => {
 
     useEffect(() => {
         const getUser = async () => {
-
+            
             try {
                 let res = await getUserProfile();
                 setUser(res[0].uid)
@@ -74,7 +74,7 @@ const Post: React.FC = () => {
         });
 
         if(!data.ok) {
-            console.log("eror");
+            console.log("error");
         }
 
         const res = await data.json();

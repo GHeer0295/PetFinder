@@ -45,6 +45,7 @@
   margin: auto;
   width: 70em;
   float: left;
+  flex-direction: column;
 }
 
 .message-input {
