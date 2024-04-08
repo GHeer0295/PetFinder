@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import "./Header.css";
 import { IconContext } from "react-icons";
 import { FaUserCircle } from "react-icons/fa";
+import { LuMessagesSquare } from "react-icons/lu";
 import { isLoggedIn, logout } from "../../services/authService";
 import { AuthContext } from "../../contexts";
 import { FaList } from "react-icons/fa";
@@ -85,7 +86,7 @@ const Header: React.FC = () => {
     <header className="header-container">
       <div className="header-content">
           <img src={logo} alt="Logo" className="logo" />
-          
+
           <div className="flex flex-row items-center">
             <div className="post-icon">
               <Post />
@@ -93,13 +94,26 @@ const Header: React.FC = () => {
             <div className="user-icon">
               <IconContext.Provider value={{ color: "black", size: "35px" }}>
                 <a href="/profile">
+
+          <div className="message-icon">
+            <IconContext.Provider value={{ color: "black", size: "35px" }}>
+              <a href="/message">
+
                   <div>
-                    <FaUserCircle />
+                    <LuMessagesSquare/>
                   </div>
-                </a>
-              </IconContext.Provider>
-            </div>
-            <LogoutButton />
+              </a>
+            </IconContext.Provider>
+          </div>
+          
+          <div className="user-icon">
+            <IconContext.Provider value={{ color: "black", size: "35px" }}>
+              <a href="/profile">
+                <div>
+                  <FaUserCircle />
+                </div>
+              </a>
+            </IconContext.Provider>
           </div>
       </div>
     </header>

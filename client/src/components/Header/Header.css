@@ -15,6 +15,10 @@
 }
 
 .user-icon {
+    padding-left: 4rem;
+    padding-top: 1rem;
+    width: auto;
+} 
 
     /* height: 95px; */
     width:auto;
@@ -22,4 +26,9 @@
 
 .post-icon {
     padding-right: 10px;
+
+.message-icon {
+    padding-top: 1rem;
+    width: auto;
+    margin-left: auto;
 }
