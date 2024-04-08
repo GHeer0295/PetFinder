@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { db } from '../Database/Database'
-import { CreateConversation, conversations } from '../Database/Schema';
-import { arrayOverlaps, eq } from 'drizzle-orm'
+import { CreateConversation, conversations, users } from '../Database/Schema';
+import { arrayOverlaps, eq, ne } from 'drizzle-orm'
 import { v4 as uuid } from 'uuid';
 
 // based on conversation UUID
@@ -14,7 +14,7 @@ export const getConversation = async (req: Request, res: Response, next: NextFun
         res.json(data)
     } catch(error) {
         console.log(`${error}. While trying to insert new conversation into database.`);
-        res.sendStatus(500).json(`Could not create conversation`);
+        res.sendStatus(500).json(`Could not get conversation`);
     }
 }
 
@@ -45,9 +45,35 @@ export const getUserConversations = async (req: Request, res: Response, next: Ne
 
     try {
         const data = await db.select().from(conversations).where(arrayOverlaps(conversations.members, [userUUID]))
-        res.json(data);
+        let mapping = (await getUsernamesFromConversations(userUUID, data));
+        res.json({data: data, mapping: Object.fromEntries(mapping)});
     } catch(error) {
         console.log(`${error}. While trying to get conversation data from database.`);
         res.sendStatus(500).json(`Could not get Conversations`);
     }
+}
+
+export const getUsernamesFromConversations = async (userUUID: string, data: any) => {
+    console.log(`Request: getUsernamesFromConversations with UserUUID: ${userUUID}`);
+    let convoToName = new Map<string, string>();
+
+    for(let i = 0; i < data.length; i++) {
+        const conversationObject = data[i];
+        const members = conversationObject.members
+
+        for(let name of members) {
+            try {
+                const response = await db.select().from(users).where(eq(users.uid, name));
+                const userName = response.filter((user: any) => user.uid !== userUUID);
+
+                const names = userName.map(person => person.firstName + " " + person.lastName).join(", ");
+                if(names !== '')
+                    convoToName.set(conversationObject.convoId, names);
+            } catch(error) {
+                console.log(error)
+            }
+        }
+    }
+
+    return convoToName;
 }
