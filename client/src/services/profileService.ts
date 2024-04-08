@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000/api/profile/'
+const API_URL = '/api/profile/'
 
 export type User = {
     firstName: string,

@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/api/reviews/'
+const API_URL = '/api/reviews/'
 
 export type Review = {
     reviewerFirstName: string,
