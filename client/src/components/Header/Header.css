@@ -15,25 +15,18 @@
 }
 
 .user-icon {
-    padding-left: 4rem;
-    padding-top: 1rem;
     width: auto;
 } 
 
 .message-icon {
-    padding-top: 1rem;
     width: auto;
 }
 
 .post-icon {
-    padding-right: 3em;
-}
-.message-icon {
-    padding-top: 1rem;
     width: auto;
     margin-left: auto;
 }
 
 .like-icon {
-    padding-right: 10px;
+    width: auto;
 }

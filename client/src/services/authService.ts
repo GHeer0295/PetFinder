@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000/api/auth/'
+const API_URL = '/api/auth/'
 
 export type NewUser = {
     username: string,
@@ -6,6 +6,10 @@ export type NewUser = {
     firstName: string,
     lastName: string,
     email: string,
+    province: string,
+    address: string,
+
+    city: string,
     age: number | string,
 }
 
@@ -53,7 +57,6 @@ export async function isLoggedIn() {
         headers: {
             "Content-Type":"application/json",
         },
-        credentials: 'include'
     })
     
     if (!res.ok) {

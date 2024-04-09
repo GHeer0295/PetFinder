@@ -7,7 +7,7 @@ import * as socketIO from "socket.io";
 import { conversationRouter } from "./Routes/ConversationRoute";
 import { messageRouter } from "./Routes/MessageRoute";
 import { authRouter } from "./Routes/AuthRoute";
-import { profileRouter } from "./Routes/ProfileRoute";
+import { userRouter } from "./Routes/UserRoute";
 import { interestsRouter } from "./Routes/InterestsRoute";
 import { postRouter } from "./Routes/PostRoute";
 import session from 'express-session'
@@ -15,6 +15,7 @@ import { searchRouter } from "./Routes/SearchRoute";
 import { CreateConversationMessage, conversationMessages } from "./Database/Schema";
 import { v4 as uuid } from 'uuid'
 import { db } from "./Database/Database";
+import { reviewRouter } from "./Routes/ReviewRoute";
 
 dotenv.config();
 
@@ -28,13 +29,13 @@ io.attach(server);
 const port = process.env.PORT || 80;
 const session_key = process.env.SECRET_KEY || 'secret_sauce'
 
+let corsOptions = {
+    credentials: true,
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true
-  }));
+app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // const RedisStore = connectRedis(session)
@@ -56,7 +57,8 @@ app.use('/api/conversations', conversationRouter);
 app.use('/api/message', messageRouter);
 app.use('/api/auth', authRouter)
 app.use('/api/search', searchRouter);
-app.use('/api/profile', profileRouter);
+app.use('/api/profile', userRouter);
+app.use('/api/reviews', reviewRouter);
 app.use('/api/post', postRouter);
 app.use('/api/interests', interestsRouter)
 
