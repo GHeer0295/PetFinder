@@ -50,13 +50,7 @@ export const accounts = pgTable('account', {
 export const accountRelations = relations(accounts, ({ one }) => ({
     user: one(users),
   }));
-<<<<<<< HEAD
   
-=======
-
-
-
->>>>>>> origin/master
 export const userRelations = relations(users, ({ one, many }) => ({
     pets: many(pets),
     adoptionPosts: many(adoptionPosts),

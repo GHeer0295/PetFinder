@@ -11,12 +11,9 @@ import Profile from './components/Profile/Profile';
 import Message from './components/Message/Message';
 import React, {useState, useEffect} from 'react';
 import { AuthContext } from './contexts';
-<<<<<<< HEAD
 import ReviewForm from './components/Reviews/ReviewForm';
-=======
 import CreatePost from './components/CreatePost/CreatePost';
 import Post from './components/Post/Post';
->>>>>>> origin/master
 
 function App() {
   const [isAuth, setIsAuth] = useState<boolean>(false);
