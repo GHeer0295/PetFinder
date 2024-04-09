@@ -10,6 +10,8 @@ import Profile from './components/Profile/Profile';
 import Message from './components/Message/Message';
 import React, {useState, useEffect} from 'react';
 import { AuthContext } from './contexts';
+import CreatePost from './components/CreatePost/CreatePost';
+import Post from './components/Post/Post';
 
 function App() {
   const [isAuth, setIsAuth] = useState<boolean>(false);
@@ -26,6 +28,8 @@ function App() {
           <Route path="/register" element={<Register/>}/>
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/message" element={<Message />} />
+          <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/posts" element={<Post />} />
         </Routes>
         </AuthContext.Provider>
       </div>
