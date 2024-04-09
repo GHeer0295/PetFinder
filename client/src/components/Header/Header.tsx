@@ -77,6 +77,8 @@ const Header: React.FC = () => {
               </a>
             </IconContext.Provider>
           </div>
+
+          <LogoutButton/>
       </div>
     </header>
   );

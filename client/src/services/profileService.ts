@@ -7,6 +7,9 @@ export type User = {
     age: number | string,
     province: string,
     city: string,
+    address: string,
+    description: string,
+    rating: number,
     uid?: string
 }
 
