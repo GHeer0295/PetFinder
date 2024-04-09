@@ -61,8 +61,6 @@ export async function isLoggedIn() {
     }
 
     console.log("Authentication successful")
-    const data = await res.json();
-    return data;
 }
 
 export async function logout() {
