@@ -88,7 +88,9 @@ const Search = () => {
       } else if (e.key === "ArrowUp") {
         setHoveredPetModalIndex(hoveredPetModalIndex - 1);
       } else if (e.key === "Enter") {
-        setPetCategory(hoveredPetModalString);
+        if (hoveredPetModalString) {
+          setPetCategory(hoveredPetModalString);
+        }
         focusInput(locationInputRef);
       }
     } else if (inputRef === locationInputRef) {

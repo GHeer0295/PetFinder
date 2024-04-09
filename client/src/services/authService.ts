@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/api/auth/'
+const API_URL = '/api/auth/'
 
 export type NewUser = {
     username: string,
@@ -6,6 +6,10 @@ export type NewUser = {
     firstName: string,
     lastName: string,
     email: string,
+    province: string,
+    address: string,
+
+    city: string,
     age: number | string,
 }
 
@@ -36,8 +40,9 @@ export async function login(data: User) {
         headers: {
             "Content-Type":"application/json",
         },
-        body: JSON.stringify(data)
-    }) 
+        body: JSON.stringify(data),
+        credentials: 'include'
+    })
 
     if (!auth_res.ok) {
         throw new Error("Unable to login")
@@ -51,8 +56,8 @@ export async function isLoggedIn() {
         method: "GET",
         headers: {
             "Content-Type":"application/json",
-        }
-    }) 
+        },
+    })
     
     if (!res.ok) {
         throw new Error("User is not authenticated")

@@ -1,0 +1,63 @@
+.modal-content {
+    background: #FEFEFE;
+    border: 1px solid #FEFEFE;
+    border-radius: 5px;
+    color: #000;
+    left: 50%;
+    outline: none;
+    overflow: auto;
+    padding: 45px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 100vh;
+  }
+  
+.modal-overlay {
+    position: fixed;
+    inset: 0px;
+    background-color: rgb(45 45 45 / 77%);
+}
+
+.interests-container {
+    width: 40%;
+    margin: 35px auto;
+    padding: 20px;
+}
+
+.interests-title {
+    padding: 35px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.interests-list {
+    list-style-type: none;
+    width: 100%;
+}
+
+.interests-list li {
+    overflow: hidden;
+    margin: 0 0 20px;
+    border-bottom: 1px solid #ccc;
+    padding: 0 0 20px;
+}
+
+.li-image {
+    float: left;
+    display: block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 10px 0 0;
+}
+
+.li-span {
+    display: block;
+    font-size: larger;
+    font-weight: 500;
+    text-align: left;
+    padding: 10px;
+    padding-left: 40px;
+    margin-left: 40px;
+}

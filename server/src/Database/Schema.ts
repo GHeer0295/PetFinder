@@ -6,7 +6,8 @@ import {
     pgEnum,
     uuid,
     timestamp,
-    ReferenceConfig
+    ReferenceConfig,
+    customType
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -20,6 +21,12 @@ const pgTimestamp = () => timestamp('createdAt', { mode: 'date', withTimezone: t
 const provinces = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'] as const;
 export const provinceEnum = pgEnum('province', provinces);
 
+const bytea = customType<{ data: string; notNull: false; default: false }>({
+    dataType() {
+      return "bytea";
+    }
+});
+
 export const users = pgTable('users', {
     uid: uuid('uid').primaryKey().defaultRandom(),
     authId: uuid('ownerId').notNull().references(() => accounts.authId, cascadeAction),
@@ -27,14 +34,16 @@ export const users = pgTable('users', {
     firstName: varchar('firstName', { length: 256 }).notNull(),
     lastName: varchar('lastName', { length: 256 }).notNull(),
     age: integer('age').notNull(),
+    address: varchar('address', { length: 256 }),
     province: provinceEnum('province'),
-    city: varchar('city', { length: 256 }),
+    description: varchar('description', { length: 256 }),
+    city: varchar('city', { length: 500 }),
     createdAt: pgTimestamp()
 });
 
 export const accounts = pgTable('account', {
     authId: uuid('uid').primaryKey().defaultRandom(),
-    username: varchar('username', { length: 256 }).notNull(),
+    username: varchar('username', { length: 256 }).unique().notNull(),
     password: varchar('password', { length: 256 }).notNull()
 })
 
@@ -42,8 +51,6 @@ export const accountRelations = relations(accounts, ({ one }) => ({
     user: one(users),
   }));
   
-
-
 export const userRelations = relations(users, ({ one, many }) => ({
     pets: many(pets),
     adoptionPosts: many(adoptionPosts),
@@ -52,7 +59,8 @@ export const userRelations = relations(users, ({ one, many }) => ({
     interests: many(postInterests),
     rejects: many(postRejects),
     favourites: many(postFavourites),
-    conversations: many(conversations)
+    conversations: many(conversations),
+    userReviews: many(userReviews)
 }));
 
 export const pets = pgTable('pets', {
@@ -62,7 +70,8 @@ export const pets = pgTable('pets', {
     createdAt: pgTimestamp(),
     
     ownerId: uuid('ownerId').notNull().references(() => users.uid, cascadeAction),
-    speciesId: uuid('speciesId').notNull().references(() => species.speciesId, cascadeAction)
+    speciesId: uuid('speciesId').notNull().references(() => species.speciesId, cascadeAction),
+    petImage: bytea("petImage")
 });
 
 export const petRelations = relations(pets, ({ one, many }) => ({
@@ -137,6 +146,28 @@ export const adoptionRequestRelations = relations(adoptionRequests, ({ one }) =>
         references: [users.uid]
     })
 }));
+
+export const userReviews = pgTable('userReviews', {
+    reviewId: uuid('reviewId').primaryKey().defaultRandom(),
+    rating: integer('rating'),
+    desc: text('desc').notNull(),
+    createdAt: pgTimestamp(),
+
+    revieweeId: uuid('revieweeId').notNull().references(() => accounts.authId, cascadeAction),
+    reviewerId: uuid('reviewerId').notNull().references(() => accounts.authId, cascadeAction)
+});
+
+export const userReviewsRelations = relations(userReviews, ({ one }) => ({
+    reviewee: one(users, {
+        fields: [userReviews.revieweeId],
+        references: [users.uid]
+    }),
+    reviewer: one(users, {
+        fields: [userReviews.reviewerId],
+        references: [users.uid]
+    })
+}));
+
 
 export const postReviews = pgTable('postReviews', {
     reviewId: uuid('reviewId').primaryKey().defaultRandom(),

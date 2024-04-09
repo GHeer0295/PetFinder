@@ -15,7 +15,18 @@
 }
 
 .user-icon {
-
-    /* height: 95px; */
-    width:auto;
+    width: auto;
 } 
+
+.message-icon {
+    width: auto;
+}
+
+.post-icon {
+    width: auto;
+    margin-left: auto;
+}
+
+.like-icon {
+    width: auto;
+}
