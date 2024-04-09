@@ -17,3 +17,9 @@ export type SearchSuccess = Readonly<{
     count: number
 }>
 export type SearchResponse = SearchSuccess | ResponseError
+
+export type AvailableSpeciesSuccess = Readonly<{
+    data: string[],
+    count: number
+}>
+export type AvailableSpeciesResponse = AvailableSpeciesSuccess | ResponseError
