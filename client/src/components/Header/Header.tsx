@@ -81,17 +81,10 @@ const Header: React.FC = () => {
     return null;
   }
 
-  return (
-    <header className="header-container">
-      <div className="header-content">
-          <img src={logo} alt="Logo" className="logo" />
-
-          <div className="flex flex-row items-center">
-            <div className="post-icon">
-              <Post />
-            </div>
-
-            <div className="message-icon">
+  const Message: React.FC | null = () => {
+    if(authContext?.isAuth) {
+      return (
+        <div className="message-icon">
               <IconContext.Provider value={{ color: "black", size: "35px" }}>
                 <a href="/message">
 
@@ -101,7 +94,25 @@ const Header: React.FC = () => {
                 </a>
               </IconContext.Provider>
             </div>
-            
+      )
+    }
+
+    return null;
+  }
+
+  return (
+    <header className="header-container">
+      <div className="header-content">
+          <img src={logo} alt="Logo" className="logo" />
+
+          <div className="flex flex-row items-center">
+            <div className="post-icon">
+              <Post />
+            </div>    
+
+            <div>
+              <Message />
+            </div>            
             <div className="user-icon">
               <IconContext.Provider value={{ color: "black", size: "35px" }}>
                 <a href="/profile">
