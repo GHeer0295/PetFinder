@@ -24,7 +24,7 @@ const SearchResults: React.FC = () => {
     const [searchResults, setSearchResults] = useState([]);
 
     const getSearchResults = async () => {
-        const res = await fetch(`http://localhost:8000/api/search?species=${pet}&city=${location}`);
+        const res = await fetch(`/api/search?species=${pet}&city=${location}`);
         const searchRes = await res.json();
         if (searchRes.data) {
             const searchData = searchRes.data.map((item: SearchResult) => {

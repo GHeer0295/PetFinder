@@ -8,7 +8,7 @@ import { conversationRouter } from "./Routes/ConversationRoute";
 import { messageRouter } from "./Routes/MessageRoute";
 import { authRouter } from "./Routes/AuthRoute";
 import { profileRouter } from "./Routes/ProfileRoute";
-
+import { interestsRouter } from "./Routes/InterestsRoute";
 import { postRouter } from "./Routes/PostRoute";
 import session from 'express-session'
 import { searchRouter } from "./Routes/SearchRoute";
@@ -55,7 +55,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/search', searchRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/post', postRouter);
-app.use('/api/interests', )
+app.use('/api/interests', interestsRouter)
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));

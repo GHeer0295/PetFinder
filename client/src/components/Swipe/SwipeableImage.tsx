@@ -5,9 +5,7 @@ import { IoHeartCircleOutline } from "react-icons/io5";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import { API, Direction } from "../../resources/TinderCard";
-import img from "../../resources/sample-1.jpg";
-import img2 from "../../resources/sample-2.jpg";
-import img3 from "../../resources/sample-3.jpg";
+import { like } from "../../services/interestService";
 
 export interface PetPost {
   city: string;
@@ -30,8 +28,19 @@ const SwipeableImage: React.FC<SwipeableImageProps> = ({ data }) => {
   const [skipRequirement, setSkipRequirement] = useState<boolean>(false);
   const [skipHovered, setSkipHovered] = useState<boolean>(false);
   const [likeHovered, setLikeHovered] = useState<boolean>(false);
-  console.log(data);
   const currentIndexRef = useRef<number>(currentIndex);
+  const canSwipe = currentIndex >= 0;
+
+  const childRefs = useRef<Array<React.RefObject<API>>>([]); // Initialize with an empty array
+
+  useEffect(() => {
+    setCurrentIndex(data.length - 1);
+    currentIndexRef.current = currentIndex;
+  
+    childRefs.current = Array(data.length)
+      .fill(0)
+      .map(() => React.createRef<API>());
+  }, [data]);
 
   const outOfFrame = (name: string, idx: number) => {
     setLikeRequirement(false);
@@ -54,26 +63,20 @@ const SwipeableImage: React.FC<SwipeableImageProps> = ({ data }) => {
     setSkipRequirement(false);
   };
 
-  const childRefs = useRef<Array<React.RefObject<API>>>(
-    Array(data.length)
-      .fill(0)
-      .map(() => React.createRef<API>())
-  );
-
   const updateCurrentIndex = (val: number) => {
     setCurrentIndex(val);
     currentIndexRef.current = val;
   };
 
-
-  const canSwipe = currentIndex >= 0;
-
-  const swiped = (direction: string, nameToDelete: string, index: number) => {
+  const swiped = async (direction: string, postId: string, index: number) => {
+    if (direction === 'right') {
+      await like({postId});
+    }
     updateCurrentIndex(index - 1);
     setLikeRequirement(false);
     setSkipRequirement(false);
     setTimeout(() => {
-      setHiddenCards([...hiddenCards, nameToDelete]);
+      setHiddenCards([...hiddenCards, postId]);
     }, 200);
   };
 
@@ -101,16 +104,16 @@ const SwipeableImage: React.FC<SwipeableImageProps> = ({ data }) => {
 
   const tinderCards = useMemo(
     () =>
-      data.map((character, index) => {
-        if (hiddenCards.includes(character.petName)) return null;
+      data.map((petCard, index) => {
+        if (hiddenCards.includes(petCard.postId)) return null;
         return (
           <TinderCard
             ref={childRefs.current[index]}
             className="swipe"
-            key={character.postId}
+            key={petCard.postId}
             preventSwipe={["up", "down"]}
-            onSwipe={(dir) => swiped(dir, character.petName, index)}
-            onCardLeftScreen={() => outOfFrame(character.petName, index)}
+            onSwipe={(dir) => swiped(dir, petCard.postId, index)}
+            onCardLeftScreen={() => outOfFrame(petCard.petName, index)}
             onSwipeRequirementFulfilled={(dir) =>
               handleSwipeRequirementFulfilled(dir)
             }
@@ -122,16 +125,16 @@ const SwipeableImage: React.FC<SwipeableImageProps> = ({ data }) => {
           >
             <div
               style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%), url(${character.petImage})`,
+                backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%), url(${petCard.petImage})`,
               }}
               className="card"
             >
-              <h1>{character.petName}</h1>
+              <h1>{petCard.petName}</h1>
             </div>
           </TinderCard>
         );
       }),
-    [data, hiddenCards, img]
+    [data, hiddenCards, childRefs.current]
   );
 
   if (hiddenCards.length === data.length || data.length === 0) {
@@ -140,7 +143,6 @@ const SwipeableImage: React.FC<SwipeableImageProps> = ({ data }) => {
         <h1 className="empty-results">No Search Results</h1>
       </div>
     )
-    
   }
 
   return (

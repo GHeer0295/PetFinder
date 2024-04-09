@@ -90,7 +90,7 @@ export const searchPosts = (search: SearchPosts): Promise<Result<SearchResponse>
 export const getSearch = async (req: Request, res: Response): Promise<unknown> => {
     let auth_id = req.session.user!
     if (!auth_id) {
-        return;
+        return res.status(401).send('Unauthorized');
     }
     let [userInfo] = await db.select().from(users).where(eq(users.authId, auth_id))
 

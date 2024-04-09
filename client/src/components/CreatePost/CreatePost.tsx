@@ -72,7 +72,7 @@ const CreatePost: React.FC = () => {
         }
 
         try {
-            const res = await fetch("http://localhost:8000/api/post/create", {
+            const res = await fetch("/api/post/create", {
                 method: "POST",
                 headers: {
                     "Content-Type":"application/json",
@@ -84,7 +84,7 @@ const CreatePost: React.FC = () => {
                 throw new Error("unable to save pet");
             }
 
-            const imageRes = await fetch(`http://localhost:8000/api/post/image/${newPetUUID}`, {
+            const imageRes = await fetch(`/api/post/image/${newPetUUID}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "image/jpeg"

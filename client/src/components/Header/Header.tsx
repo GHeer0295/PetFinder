@@ -81,7 +81,7 @@ const Header: React.FC = () => {
   }
 
   const InterestsButton: React.FC | null = () => {
-    // if (authContext?.isAuth) {
+    if (authContext?.isAuth) {
       return (
         <IconContext.Provider value={{ color: "black", size: "35px" }}>
         <a href="/interests">
@@ -91,7 +91,8 @@ const Header: React.FC = () => {
         </a>
       </IconContext.Provider>
       )
-    // }
+    }
+    return null;
   }
 
   return (
@@ -100,7 +101,9 @@ const Header: React.FC = () => {
           <img src={logo} alt="Logo" className="logo" onClick={handleLogoClick}/>
           
           <div className="flex flex-row items-center">
-            <InterestsButton />
+            <div className="like-icon">
+              <InterestsButton />
+            </div>
             <div className="post-icon">
               <Post />
             </div>
