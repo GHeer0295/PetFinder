@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import "./Header.css";
 import { IconContext } from "react-icons";
 import { FaUserCircle } from "react-icons/fa";
+import { LuMessagesSquare } from "react-icons/lu";
 import { isLoggedIn, logout } from "../../services/authService";
 import { AuthContext } from "../../contexts";
 import { FaList, FaHeart } from "react-icons/fa";
@@ -99,14 +100,22 @@ const Header: React.FC = () => {
     <header className="header-container">
       <div className="header-content">
           <img src={logo} alt="Logo" className="logo" onClick={handleLogoClick}/>
-          
           <div className="flex flex-row items-center">
-            <div className="like-icon">
-              <InterestsButton />
+            <div className="message-icon">
+              <IconContext.Provider value={{ color: "black", size: "35px" }}>
+                <a href="/message">
+                    <div>
+                      <LuMessagesSquare/>
+                    </div>
+                </a>
+              </IconContext.Provider>
             </div>
-            <div className="post-icon">
-              <Post />
-            </div>
+              <div className="like-icon">
+                <InterestsButton />
+              </div>
+              <div className="post-icon">
+                <Post />
+              </div>          
             <div className="user-icon">
               <IconContext.Provider value={{ color: "black", size: "35px" }}>
                 <a href="/profile">
