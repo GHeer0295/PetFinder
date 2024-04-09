@@ -68,7 +68,7 @@ const Header: React.FC = () => {
 
     if(authContext?.isAuth) {
       return (
-        <IconContext.Provider value={{ color: "black", size: "35px" }}>
+        <IconContext.Provider value={{ color: "black", size: "30px" }}>
         <a href="/posts">
           <div>
             <FaList />
@@ -80,7 +80,6 @@ const Header: React.FC = () => {
 
     return null;
   }
-
   const InterestsButton: React.FC | null = () => {
     if (authContext?.isAuth) {
       return (

@@ -40,7 +40,6 @@ const CreatePost: React.FC = () => {
         const getUser = async () => {
 
             try {
-                await isLoggedIn();
                 let res = await getUserProfile();
                 console.log(res[0].uid);
                 setUser(res[0].uid)

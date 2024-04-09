@@ -23,13 +23,17 @@
 .message-icon {
     padding-top: 1rem;
     width: auto;
-    margin-left: auto;
 }
 
 .post-icon {
-    padding-right: 10px;
+    padding-right: 3em;
+}
+.message-icon {
+    padding-top: 1rem;
+    width: auto;
+    margin-left: auto;
 }
 
 .like-icon {
-    padding-right: 10px;
+    padding-right: 3rem;
 }
