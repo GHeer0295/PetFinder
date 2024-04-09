@@ -31,7 +31,7 @@ export async function getUserProfile(username: any) {
 
 export async function updateUserProfile(data: User) {
     const auth_res = await fetch(API_URL, {
-        method: "POST",
+        method: "PATCH",
         headers: {
             "Content-Type":"application/json",
         },

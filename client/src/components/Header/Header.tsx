@@ -52,33 +52,33 @@ const Header: React.FC = () => {
     return null
   }
 
-
-
   return (
     <header className="header-container">
       <div className="header-content">
           <img src={logo} alt="Logo" className="logo" />
-          <div className="message-icon">
-            <IconContext.Provider value={{ color: "black", size: "35px" }}>
-              <a href="/message">
-                  <div>
-                    <LuMessagesSquare/>
-                  </div>
-              </a>
-            </IconContext.Provider>
-          </div>
+          <div className="flex flex-row items-center">
+            <div className="message-icon mx-2">
+              <IconContext.Provider value={{ color: "black", size: "35px" }}>
+                <a href="/message">
+                    <div>
+                      <LuMessagesSquare/>
+                    </div>
+                </a>
+              </IconContext.Provider>
+            </div>
           
-          <div className="user-icon">
-            <IconContext.Provider value={{ color: "black", size: "35px" }}>
-              <a href="/profile">
-                <div>
-                  <FaUserCircle />
-                </div>
-              </a>
-            </IconContext.Provider>
-          </div>
+            <div className="user-icon mx-2">
+              <IconContext.Provider value={{ color: "black", size: "35px" }}>
+                <a href="/profile">
+                  <div>
+                    <FaUserCircle />
+                  </div>
+                </a>
+              </IconContext.Provider>
+            </div>
 
           <LogoutButton/>
+          </div>
       </div>
     </header>
   );
