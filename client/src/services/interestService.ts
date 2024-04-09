@@ -14,6 +14,6 @@ export async function like(data: LikePost) {
     }) 
 
     if (!res.ok) {
-        throw new Error("Unable to Like Post.")
+        console.log("Unable to like post.");
     }
 }
