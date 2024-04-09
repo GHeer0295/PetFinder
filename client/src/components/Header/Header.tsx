@@ -7,7 +7,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { LuMessagesSquare } from "react-icons/lu";
 import { isLoggedIn, logout } from "../../services/authService";
 import { AuthContext } from "../../contexts";
-import { FaList } from "react-icons/fa";
+import { FaList, FaHeart } from "react-icons/fa";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -80,6 +80,20 @@ const Header: React.FC = () => {
 
     return null;
   }
+  const InterestsButton: React.FC | null = () => {
+    if (authContext?.isAuth) {
+      return (
+        <IconContext.Provider value={{ color: "black", size: "35px" }}>
+        <a href="/interests">
+          <div>
+            <FaHeart />
+          </div>
+        </a>
+      </IconContext.Provider>
+      )
+    }
+    return null;
+  }
 
   const Message: React.FC | null = () => {
     if(authContext?.isAuth) {
@@ -87,7 +101,6 @@ const Header: React.FC = () => {
         <div className="message-icon">
               <IconContext.Provider value={{ color: "black", size: "35px" }}>
                 <a href="/message">
-
                     <div>
                       <LuMessagesSquare/>
                     </div>
@@ -109,7 +122,9 @@ const Header: React.FC = () => {
             <div className="post-icon mx-2">
               <Post />
             </div>    
-
+            <div className="like-icon mx-2">
+              <InterestsButton />
+            </div>
             <div className="message-icon mx-2">
               <Message />
             </div>            
@@ -122,8 +137,7 @@ const Header: React.FC = () => {
                 </a>
               </IconContext.Provider>
             </div>
-
-          <LogoutButton/>
+            <LogoutButton />
           </div>
       </div>
     </header>

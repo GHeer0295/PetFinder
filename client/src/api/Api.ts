@@ -1,6 +1,6 @@
 import { SearchQuery, SearchResponse } from "./Search";
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'http://localhost:80';
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
 

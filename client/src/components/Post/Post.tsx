@@ -104,6 +104,7 @@ const Post: React.FC = () => {
                         </a>
                     </IconContext.Provider>
                 </div>
+                <h1 className="post-header">Your Posts</h1>
                 <ul>
                     {posts.map((post) => (
                         <li className="post" onClick={() => {handleClick(post); getPetImage(post)}}>{post.title}</li>

@@ -24,4 +24,9 @@
 
 .post-icon {
     width: auto;
+    margin-left: auto;
+}
+
+.like-icon {
+    width: auto;
 }
