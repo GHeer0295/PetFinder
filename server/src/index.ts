@@ -9,6 +9,7 @@ import { messageRouter } from "./Routes/MessageRoute";
 import { authRouter } from "./Routes/AuthRoute";
 import { userRouter } from "./Routes/UserRoute";
 
+import { postRouter } from "./Routes/PostRoute";
 import session from 'express-session'
 import { searchRouter } from "./Routes/SearchRoute";
 import { CreateConversationMessage, conversationMessages } from "./Database/Schema";
@@ -58,6 +59,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/search', searchRouter);
 app.use('/api/profile', userRouter);
 app.use('/api/reviews', reviewRouter);
+app.use('/api/post', postRouter);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));

@@ -7,7 +7,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { LuMessagesSquare } from "react-icons/lu";
 import { isLoggedIn, logout } from "../../services/authService";
 import { AuthContext } from "../../contexts";
-
+import { FaList } from "react-icons/fa";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -52,22 +52,68 @@ const Header: React.FC = () => {
     return null
   }
 
-  return (
-    <header className="header-container">
-      <div className="header-content">
-          <img src={logo} alt="Logo" className="logo" />
-          <div className="flex flex-row items-center">
-            <div className="message-icon mx-2">
+  useEffect(() => {
+    const postButton = () => {
+      const buttonDiv = document.getElementById("post-icon");
+
+      if(authContext?.isAuth && buttonDiv) {
+        buttonDiv.style.display = "block";
+      }  
+    }
+
+    postButton();
+  }, []);
+
+  const Post: React.FC | null = () => {
+
+    if(authContext?.isAuth) {
+      return (
+        <IconContext.Provider value={{ color: "black", size: "30px" }}>
+        <a href="/posts">
+          <div>
+            <FaList />
+          </div>
+        </a>
+      </IconContext.Provider>
+      )
+    }
+
+    return null;
+  }
+
+  const Message: React.FC | null = () => {
+    if(authContext?.isAuth) {
+      return (
+        <div className="message-icon">
               <IconContext.Provider value={{ color: "black", size: "35px" }}>
                 <a href="/message">
+
                     <div>
                       <LuMessagesSquare/>
                     </div>
                 </a>
               </IconContext.Provider>
             </div>
-          
-            <div className="user-icon mx-2">
+      )
+    }
+
+    return null;
+  }
+
+  return (
+    <header className="header-container">
+      <div className="header-content">
+          <img src={logo} alt="Logo" className="logo" />
+
+          <div className="flex flex-row items-center">
+            <div className="post-icon">
+              <Post />
+            </div>    
+
+            <div className="message-icon">
+              <Message />
+            </div>            
+            <div className="user-icon">
               <IconContext.Provider value={{ color: "black", size: "35px" }}>
                 <a href="/profile">
                   <div>

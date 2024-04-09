@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sidebar {
+    flex: 1;
+    max-width: 200px; /* Adjust width as needed */
+    padding: 20px;
+    background-color: 0;
+    flex-direction: column;
+    width: 10em;
+    display: flex;
+    float: left;
+}
+
+.main-content {
+    flex: 2;
+    background-color: #ffffff; /* Main content background color */
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-button {
+    max-width: 200px;
+    margin-left: auto;
+}
+
+.post {
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 10px; 
+    padding: 10px;
+    display: block; /* Set display to block */
+    margin-bottom: 10px; /* Add margin between list items */
+}
+
+ul {
+    list-style: none; /* Remove default list styles */
+    padding: 0; /* Remove default padding */
+  }
+  
+  
