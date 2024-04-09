@@ -6,7 +6,8 @@ import { SQLWrapper, eq } from 'drizzle-orm';
 
 declare module 'express-session' {
     interface SessionData {
-      user: string | SQLWrapper | undefined;
+      user: string | SQLWrapper | undefined,
+      name: string | SQLWrapper | undefined
     }
 }
 
@@ -21,8 +22,8 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         const passwordMatch = await bcrypt.compare(password, result[0].password);
         if (passwordMatch){
             req.session.user = result[0].authId
-            console.log(req.session.user)
-
+            req.session.name = result[0].username
+            console.log(req.session.name)
             res.status(200).send("Login success!")
             next()
         }
@@ -45,8 +46,8 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
         let accountResults = await db.insert(accounts).values([account]).returning();
         let authId = accountResults[0].authId
 
-        let {firstName, lastName, email, age} = req.body
-        const user = {authId, firstName, lastName, email, age}
+        let {firstName, lastName, email, age, address, city, province} = req.body
+        const user = {authId, firstName, lastName, email, age, address, city, province}
         let userResults = await db.insert(users).values([user]);
 
         res.status(200).send(userResults)

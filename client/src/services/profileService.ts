@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000/api/profile/'
+const API_URL = '/api/profile/'
 
 export type User = {
     firstName: string,
@@ -7,11 +7,14 @@ export type User = {
     age: number | string,
     province: string,
     city: string,
-    uid: string
+    address: string,
+    description: string,
+    rating: number,
+    uid?: string
 }
 
-export async function getUserProfile() {
-    const res = await fetch(API_URL, {
+export async function getUserProfile(username: any) {
+    const res = await fetch(API_URL + username, {
         method: "GET",
         headers: {
             "Content-Type":"application/json",
@@ -24,4 +27,20 @@ export async function getUserProfile() {
     }
 
     return res.json() as Promise<User[]>
+}
+
+export async function updateUserProfile(data: User) {
+    const auth_res = await fetch(API_URL, {
+        method: "PATCH",
+        headers: {
+            "Content-Type":"application/json",
+        },
+        body: JSON.stringify(data)
+    }) 
+
+    if (!auth_res.ok) {
+        throw new Error("Unable to update user information")
+    }
+
+    console.log(auth_res)
 }

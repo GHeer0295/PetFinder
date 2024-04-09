@@ -26,8 +26,8 @@ const Post: React.FC = () => {
         const getUser = async () => {
             
             try {
-                let res = await getUserProfile();
-                setUser(res[0].uid)
+                let res = await getUserProfile('');
+                setUser(res[0].uid!)
             } catch(error) {
                 navigate("/login");
             }

@@ -106,14 +106,14 @@ const Header: React.FC = () => {
           <img src={logo} alt="Logo" className="logo" />
 
           <div className="flex flex-row items-center">
-            <div className="post-icon">
+            <div className="post-icon mx-2">
               <Post />
             </div>    
 
-            <div>
+            <div className="message-icon mx-2">
               <Message />
             </div>            
-            <div className="user-icon">
+            <div className="user-icon mx-2">
               <IconContext.Provider value={{ color: "black", size: "35px" }}>
                 <a href="/profile">
                   <div>
@@ -122,6 +122,8 @@ const Header: React.FC = () => {
                 </a>
               </IconContext.Provider>
             </div>
+
+          <LogoutButton/>
           </div>
       </div>
     </header>

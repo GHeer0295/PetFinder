@@ -126,8 +126,8 @@ const Message: React.FC = () => {
     const getUser = async () => {
 
       try {
-        let profile = await getUserProfile();
-        setUser(profile[0].uid);
+        let profile = await getUserProfile('');
+        setUser(profile[0].uid!);
       } catch(error) {
         console.log(error);
         navigate("/login");

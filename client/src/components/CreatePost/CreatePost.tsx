@@ -40,9 +40,9 @@ const CreatePost: React.FC = () => {
         const getUser = async () => {
 
             try {
-                let res = await getUserProfile();
+                let res = await getUserProfile('');
                 console.log(res[0].uid);
-                setUser(res[0].uid)
+                setUser(res[0].uid!)
             } catch(error) {
                 console.log(error);
                 navigate("/login");
