@@ -183,8 +183,9 @@ const Search = () => {
           apiKey={process.env.REACT_APP_PLACES_API_KEY}
           apiOptions={{ region: 'ca' }}
           selectProps={{
-              value: locationValue,
-              onChange: setLocationValue
+            value: locationValue,
+            placeholder: 'Enter City',
+            onChange: setLocationValue
           }}
           autocompletionRequest={{
               componentRestrictions: {
