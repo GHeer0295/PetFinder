@@ -7,10 +7,11 @@ import "./Search.css";
 
 import { pets, locations } from "./dummydata";
 import { getAvailableSpecies } from "../../../services/searchService";
+import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 
 const Search = () => {
   const [petCategory, setPetCategory] = useState("");
-  const [locationValue, setLocationValue] = useState("");
+  const [locationValue, setLocationValue] = useState<any>("");
   const [isFocused, setIsFocused] = useState(false);
   const [isPetFocused, setPetFocused] = useState(false);
   const [isLocationFocused, setLocationFocused] = useState(false);
@@ -105,13 +106,14 @@ const Search = () => {
         if (hoveredLocationModalString) {
           handleSearchClick(petCategory, hoveredLocationModalString);
         } else {
-          handleSearchClick(petCategory, locationValue);
+          handleSearchClick(petCategory, locationValue.value.structured_formatting.main_text);
         }
       }
     }
   };
 
   const handleSearchClick = (pet: string, location: string) => {
+    console.log(JSON.stringify(location));
     const searchParams = new URLSearchParams({
       pet,
       location,
@@ -151,7 +153,7 @@ const Search = () => {
         />
       </div>
       <div className="locationContainer">
-        <input
+        {/* <input
           type="text"
           value={locationValue}
           onChange={(e) => setLocationValue(e.target.value)}
@@ -167,8 +169,8 @@ const Search = () => {
             size={50}
             onMouseDown={() => handleCloseIcon(locationInputRef)}
           />
-        )}
-        <SearchModal
+        )} */}
+        {/* <SearchModal
           currentValue={locationValue}
           searchResults={locations}
           onSelectResult={setLocationValue}
@@ -176,10 +178,24 @@ const Search = () => {
           hoveredIndex={hoveredLocationModalIndex}
           setHoveredItem={setHoveredLocationModalIndex}
           setValueString={setHoveredLocationString}
+        /> */}
+        <GooglePlacesAutocomplete
+          apiKey={process.env.REACT_APP_PLACES_API_KEY}
+          apiOptions={{ region: 'ca' }}
+          selectProps={{
+              value: locationValue,
+              onChange: setLocationValue
+          }}
+          autocompletionRequest={{
+              componentRestrictions: {
+                  country: ['ca'],
+              },
+              types: ['(cities)']
+          }}
         />
         <div
           className={isFocused ? "searchIcon focus" : "searchIcon"}
-          onClick={() => handleSearchClick(petCategory, locationValue)}
+          onClick={() => handleSearchClick(petCategory, locationValue.value.structured_formatting.main_text)}
         >
           <BiSearch size={20} />
           <span
