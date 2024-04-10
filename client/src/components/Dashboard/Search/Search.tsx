@@ -7,6 +7,7 @@ import "./Search.css";
 
 import { pets, locations } from "./dummydata";
 import { getAvailableSpecies } from "../../../services/searchService";
+import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 
 const Search = () => {
   const [petCategory, setPetCategory] = useState("");
@@ -151,7 +152,7 @@ const Search = () => {
         />
       </div>
       <div className="locationContainer">
-        <input
+        {/* <input
           type="text"
           value={locationValue}
           onChange={(e) => setLocationValue(e.target.value)}
@@ -167,8 +168,8 @@ const Search = () => {
             size={50}
             onMouseDown={() => handleCloseIcon(locationInputRef)}
           />
-        )}
-        <SearchModal
+        )} */}
+        {/* <SearchModal
           currentValue={locationValue}
           searchResults={locations}
           onSelectResult={setLocationValue}
@@ -176,6 +177,23 @@ const Search = () => {
           hoveredIndex={hoveredLocationModalIndex}
           setHoveredItem={setHoveredLocationModalIndex}
           setValueString={setHoveredLocationString}
+        /> */}
+        <GooglePlacesAutocomplete
+          apiKey={process.env.REACT_APP_PLACES_API_KEY}
+          apiOptions={{ region: 'ca' }}
+          selectProps={{
+              value: {
+                value: locationValue,
+                label: 'Enter Location'
+              },
+              onChange: val => setLocationValue(val?.value),
+          }}
+          autocompletionRequest={{
+              componentRestrictions: {
+                  country: ['ca'],
+              },
+              types: ['street_address']
+          }}
         />
         <div
           className={isFocused ? "searchIcon focus" : "searchIcon"}
