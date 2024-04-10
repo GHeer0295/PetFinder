@@ -192,7 +192,7 @@ const Search = () => {
               componentRestrictions: {
                   country: ['ca'],
               },
-              types: ['street_address']
+              types: ['(cities)']
           }}
         />
         <div
