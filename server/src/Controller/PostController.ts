@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { eq } from 'drizzle-orm'
-import { AdoptionPost, adoptionPosts, Pet, species, Species, pets } from '../Database/Schema';
+import { AdoptionPost, adoptionPosts, Pet, species, Species, pets, users } from '../Database/Schema';
 import { Request, Response, NextFunction } from 'express';
 import { db } from '../Database/Database'
 
@@ -19,10 +19,13 @@ import { db } from '../Database/Database'
 // }
 
 export const getUserPosts = async (req: Request, res: Response, next: NextFunction) => {
-    const userUUID = req.params.userUUID;
-    
+    let auth_id = req.session.user!
+    if (!auth_id) {
+        return res.status(401).send('Unauthorized');
+    }
+    const [userInfo] = await db.select().from(users).where(eq(users.authId, auth_id))
     try {
-        const data = await db.select().from(adoptionPosts).where(eq(adoptionPosts.userId, userUUID));
+        const data = await db.select().from(adoptionPosts).where(eq(adoptionPosts.userId, userInfo.uid));
         res.json(data);
     } catch(error) {
         console.log(`${error}. While trying to get posts for user from Database.`);
@@ -31,6 +34,11 @@ export const getUserPosts = async (req: Request, res: Response, next: NextFuncti
 }
 
 export const createPost = async(req: Request, res: Response, next: NextFunction) => {
+    let auth_id = req.session.user!
+    if (!auth_id) {
+        return res.status(401).send('Unauthorized');
+    }
+    const [userInfo] = await db.select().from(users).where(eq(users.authId, auth_id))
     const postData = req.body;
     console.log("create post");
     console.log(postData);
@@ -42,7 +50,7 @@ export const createPost = async(req: Request, res: Response, next: NextFunction)
 
     const newPet: Pet = {
         name: postData.name,
-        ownerId: postData.ownerId,
+        ownerId: userInfo.uid,
         age: parseInt(postData.age),
         createdAt: new Date(),
         petId: postData.newPetUUID,
@@ -57,7 +65,7 @@ export const createPost = async(req: Request, res: Response, next: NextFunction)
         desc: postData.desc,
         province: postData.province,
         city: postData.city,
-        userId: postData.ownerId,
+        userId: userInfo.uid,
         petId: postData.newPetUUID
     }
 
@@ -109,7 +117,6 @@ export const deletePost = async(req: Request, res: Response, next: NextFunction)
 export const addImage = async(req: Request, res: Response, next: NextFunction) => {
     console.log("adding image")
     console.log(req.params.petUUID);
-
     try {
         const result = await db.update(pets).set({petImage: req.body}).where(eq(pets.petId, req.params.petUUID));
         res.json(result);
