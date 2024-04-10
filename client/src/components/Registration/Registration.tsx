@@ -104,7 +104,7 @@ const Registration: React.FC = () => {
                             country: ['ca'],
                         },
                         types: ['street_address']
-                    }}               
+                    }}
                     />
                 </div>
                 <div className='mb-4'>
