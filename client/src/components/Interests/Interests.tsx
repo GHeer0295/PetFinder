@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ReactModal from "react-modal";
+import { FiMessageSquare } from "react-icons/fi";
+import { IconContext } from "react-icons";
 import "./Interests.css"
+import { getUserProfile } from '../../services/profileService';
 
 interface PostData {
     postId: string;
@@ -51,6 +54,47 @@ const Interests: React.FC = () => {
         setOpenModal(false);
     }
 
+    const handleClick = async () => {
+        const postID = curPost?.postId;
+        let curUser = await getUserProfile("");
+        const userId = curUser[0].userId!;
+
+        try {
+    
+            const result: any = await fetch(`/api/post/${postID}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type":"application/json",
+                },
+            });
+
+            if(!result.ok) {
+                throw new Error("Unable to get User from post");
+            }
+
+            const data  = await result.json();
+
+            const obj = {
+                toUser: data,
+                senderId: userId
+            }
+
+            const createMessage = await fetch(`/api/conversations/user/create-conversation`, {
+                method: "POST",
+                headers: {
+                    "Content-Type":"application/json",
+                },
+                body: JSON.stringify(obj)
+            });
+
+            if(!createMessage.ok) {
+                throw new Error("unable to create message");
+            }
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div className="interests-container">
             <h1 className="interests-title">Interested Posts</h1>
@@ -70,6 +114,15 @@ const Interests: React.FC = () => {
                 onRequestClose={() => handleCloseModal()}
             >
                 <div>
+                    <div className='message-button'>
+                        <IconContext.Provider value={{ color: "black", size: "35px" }}>
+                            <a href="/message" onClick={handleClick}>
+                                <div>
+                                    <FiMessageSquare />
+                                </div>
+                            </a>
+                        </IconContext.Provider>
+                    </div>
                     <div className='flex justify-center items-center'>
                         <div className='flex flex-row flex-wrap w-full p-10'>
                             <div className='basis-full flex justify-center mt-3'>

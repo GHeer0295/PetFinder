@@ -27,7 +27,7 @@ const Post: React.FC = () => {
             
             try {
                 let res = await getUserProfile('');
-                setUser(res[0].uid!)
+                setUser(res[0].userId!)
             } catch(error) {
                 navigate("/login");
             }
@@ -38,7 +38,7 @@ const Post: React.FC = () => {
 
     useEffect(() => {
         const getPosts = async() => {
-            const res = await fetch(`http://localhost:8000/api/post/user/${user}`, {
+            const res = await fetch(`/api/post/user/${user}`, {
                 method: "GET",
                 headers: {
                     "Content-Type":"application/json",
@@ -66,7 +66,7 @@ const Post: React.FC = () => {
 
     const getPetImage = async(post: AdoptionPost) => {
         const petId = post.petId;
-        const data = await fetch(`http://localhost:8000/api/post/getimage/${petId}`, {
+        const data = await fetch(`api/post/getimage/${petId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "image/jpeg"

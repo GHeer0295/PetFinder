@@ -1,5 +1,7 @@
 .message-container {
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .message {
@@ -21,7 +23,6 @@
 }
 
 .received {
-  flex-direction: column;
   background-color: #8e8e93;
   border-radius: 3px 10px 10px 10px;
   align-self: flex-start;
@@ -29,7 +30,6 @@
   color: black;
   word-break: break-word;
   width: fit-content;
-
 }
 
 .loading-message {
@@ -39,13 +39,14 @@
 }  
 
 .container {
-  height: 550px;
+  height: 500px;
   overflow-y: scroll;
   word-wrap: break-all;
   margin: auto;
   width: 70em;
   float: left;
   flex-direction: column;
+  gap: 1em;
 }
 
 .message-input {
@@ -60,6 +61,8 @@
   display: fixed;
   position: relative;
   width: max-content;
+  justify-content: space-evenly;
+
 }
 
 .send-button {
@@ -111,7 +114,6 @@
   display: flex;
   float: left;
 }
-
 
 .messages-bar a {
   display: block;
