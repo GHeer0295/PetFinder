@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { SearchResponse } from '../Api/Search';
+import { AvailableSpeciesResponse, SearchResponse } from '../Api/Search';
 import { db } from '../Database/Database';
 import { adoptionPosts, pets, species, users } from '../Database/Schema';
 import { and, eq, ilike, notInArray, or } from 'drizzle-orm';
@@ -87,6 +87,14 @@ export const searchPosts = (search: SearchPosts): Promise<Result<SearchResponse>
     return tryRun(searchQuery);
 };
 
+export const availableSpecies = async (): Promise<Result<AvailableSpeciesResponse>> => {
+    const speciesNameQuery = db
+        .select({ name: species.name })
+        .from(species)
+        .then(data => ({ data: data.map(s => s.name), count: data.length }));
+    return tryRun(speciesNameQuery);
+};
+
 export const getSearch = async (req: Request, res: Response): Promise<unknown> => {
     let auth_id = req.session.user!
     if (!auth_id) {
@@ -103,7 +111,7 @@ export const getSearch = async (req: Request, res: Response): Promise<unknown> =
     
     // run search with the provided search fields from req.query
     const searchResults = await searchPosts({
-        strictSearch: true,
+        strictSearch: false,
         excludeUserIds: [String(userInfo.uid)],
         ...validationRes.data
     });
@@ -112,4 +120,12 @@ export const getSearch = async (req: Request, res: Response): Promise<unknown> =
         return res.status(500).json(createValidationError('Error searching for posts'));
 
     return res.json(searchResults.value);
+};
+
+export const getAvailableSpecies = async (_: Request, res: Response): Promise<unknown> => {
+    const speciesRes = await availableSpecies();
+    if (!speciesRes.success)
+        return res.status(500).json(createValidationError('Error getting available species'));
+
+    return res.json(speciesRes.value);
 };

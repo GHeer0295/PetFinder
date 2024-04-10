@@ -66,7 +66,7 @@ const Post: React.FC = () => {
 
     const getPetImage = async(post: AdoptionPost) => {
         const petId = post.petId;
-        const data = await fetch(`api/post/getimage/${petId}`, {
+        const data = await fetch(`/api/post/getimage/${petId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "image/jpeg"
