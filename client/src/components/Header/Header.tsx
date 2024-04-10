@@ -116,7 +116,7 @@ const Header: React.FC = () => {
   return (
     <header className="header-container">
       <div className="header-content">
-          <img src={logo} alt="Logo" className="logo" />
+          <img src={logo} alt="Logo" className="logo" onClick={handleLogoClick} />
 
           <div className="flex flex-row items-center">
             <div className="post-icon mx-2">
