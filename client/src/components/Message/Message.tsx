@@ -41,7 +41,7 @@ const Message: React.FC = () => {
   // Get messages for clicked-on conversation
   const getMessages = async (convoId: string) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/message/${convoId}`);
+      const res = await fetch(`/api/message/${convoId}`);
       const data = await res.json();
       setMessages(data);
       setCurConversation(convoId);
@@ -158,7 +158,7 @@ const Message: React.FC = () => {
     const getConversations = async () => {
       console.log(`Getting conversations for user: ${user}`);
       try {
-        const response = await fetch(`http://localhost:8000/api/conversations/user/${user}`, {
+        const response = await fetch(`/api/conversations/user/${user}`, {
           method: "GET",
           headers: {
             "content-type": "application/json"

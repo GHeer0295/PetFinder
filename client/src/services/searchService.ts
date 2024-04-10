@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000/api/search';
+const API_URL = '/api/search';
 const AVAILABLE_SPECIES_URL = `${API_URL}/availableSpecies`;
 
 export type ResponseError = Readonly<{
