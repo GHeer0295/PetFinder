@@ -21,7 +21,7 @@ const pgTimestamp = () => timestamp('createdAt', { mode: 'date', withTimezone: t
 const provinces = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'] as const;
 export const provinceEnum = pgEnum('province', provinces);
 
-const bytea = customType<{ data: string; notNull: false; default: false }>({
+const bytea = customType<{ data: any; notNull: false; default: false }>({
     dataType() {
       return "bytea";
     }
