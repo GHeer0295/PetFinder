@@ -10,7 +10,7 @@ export type User = {
     address: string,
     description: string,
     rating: number,
-    uid?: string
+    userId: string
 }
 
 export async function getUserProfile(username: any) {

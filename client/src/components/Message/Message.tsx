@@ -7,7 +7,7 @@ import { error } from 'console';
 import { Navigate, useNavigate } from 'react-router';
 import { getUserProfile } from '../../services/profileService';
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 80;
 let socket = io(`:${port}`, { transports : ['websocket'] })
 
 // Temp
@@ -126,12 +126,14 @@ const Message: React.FC = () => {
     const getUser = async () => {
 
       try {
-        let profile = await getUserProfile('');
-        setUser(profile[0].uid!);
+        let profile: any = await getUserProfile('');
+        console.log(profile[0]);
+        setUser(profile[0].userId);
       } catch(error) {
         console.log(error);
         navigate("/login");
       }
+
     }
 
     getUser();
@@ -170,6 +172,7 @@ const Message: React.FC = () => {
         }
 
         const data = await response.json();
+        console.log(data);
         setConversations(data.data)
         let newMap = new Map(Object.entries(data.mapping));
         setMap(newMap);

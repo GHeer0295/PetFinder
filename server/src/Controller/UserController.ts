@@ -18,6 +18,7 @@ export const getUserInformation = async (req: Request, res: Response, next: Next
             description: users.description,
             city: users.city,
             rating: sql<number>`cast(avg(${userReviews.rating}) as int)`,
+            userId: users.uid
         })
             .from(users)
             .leftJoin(userReviews, eq(users.authId, userReviews.revieweeId))
@@ -44,7 +45,7 @@ export const getOtherUserInformation = async (req: Request, res: Response, next:
             province: users.province,
             description: users.description,
             city: users.city,
-            rating: sql<number>`cast(avg(${userReviews.rating}) as int)`,
+            rating: sql<number>`cast(avg(${userReviews.rating}) as int)`
         })
         .from(users)
         .innerJoin(accounts, eq(accounts.authId, users.authId))

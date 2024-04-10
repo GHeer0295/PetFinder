@@ -2,7 +2,6 @@ import { readFile, readFileSync } from 'fs';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
-import { isLoggedIn } from '../../services/authService';
 import { getUserProfile } from '../../services/profileService';
 
 type AdoptionPost = {
@@ -40,9 +39,8 @@ const CreatePost: React.FC = () => {
         const getUser = async () => {
 
             try {
-                let res = await getUserProfile('');
-                console.log(res[0].uid);
-                setUser(res[0].uid!)
+                let res = await getUserProfile("");
+                setUser(res[0].userId)
             } catch(error) {
                 console.log(error);
                 navigate("/login");

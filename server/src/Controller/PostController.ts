@@ -135,3 +135,14 @@ export const getPetImage = async(req: Request, res: Response, next: NextFunction
         console.log(error);
     }
 }
+
+export const getUserFromPost = async(req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.postId;
+
+    try {
+        const result = await db.select().from(adoptionPosts).where(eq(adoptionPosts.adoptPostId, id));
+        res.json(result[0].userId);
+    } catch(error) {
+        console.log(error);
+    }
+}

@@ -27,7 +27,7 @@ const Post: React.FC = () => {
             
             try {
                 let res = await getUserProfile('');
-                setUser(res[0].uid!)
+                setUser(res[0].userId!)
             } catch(error) {
                 navigate("/login");
             }

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { db } from '../Database/Database'
-import { CreateConversation, conversations, users } from '../Database/Schema';
+import { ConversationMessage, CreateConversation, conversationMessages, conversations, users } from '../Database/Schema';
 import { arrayOverlaps, eq, ne } from 'drizzle-orm'
 import { v4 as uuid } from 'uuid';
 
@@ -76,4 +76,35 @@ export const getUsernamesFromConversations = async (userUUID: string, data: any)
     }
 
     return convoToName;
+}
+
+export const createNewConversationDefaultMessage = async (req: Request, res: Response, next: NextFunction) => {
+    console.log("body")
+    console.log(req.body);
+    const { toUser, senderId } = req.body;
+
+
+    const convoId = uuid();
+
+    const newConvo: CreateConversation = {
+        convoId: convoId,
+        members: [toUser, senderId],
+        createdAt: new Date()
+    }
+
+    const defaultConversationMessage: ConversationMessage = {
+        createdAt: new Date(),
+        convoId: convoId,
+        convoMsgId: uuid(),
+        message: `Hi, is this pet available?`,
+        senderId: senderId
+    }
+
+    try {
+        const resultNewConversation = await db.insert(conversations).values(newConvo);
+        const resultNewMessage = await db.insert(conversationMessages).values(defaultConversationMessage);
+        res.sendStatus(200);
+    } catch(error) {
+        console.log(error);
+    }
 }
