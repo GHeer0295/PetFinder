@@ -163,7 +163,7 @@ const seedPets: CreatePet[] = [
         name: 'Bugs',
         age: 1,
         ownerId: seedUsers[2].uid!,
-        speciesId: seedSpecies[2].speciesId!,
+        speciesId: seedSpecies[4].speciesId!,
         petImage: "hamster1.jpeg",
     },
     {
@@ -171,7 +171,7 @@ const seedPets: CreatePet[] = [
         name: 'Polly',
         age: 2,
         ownerId: seedUsers[3].uid!,
-        speciesId: seedSpecies[3].speciesId!,
+        speciesId: seedSpecies[1].speciesId!,
         petImage: "cat2.jpeg",
     },
     {
@@ -235,7 +235,7 @@ const seedPets: CreatePet[] = [
         name: 'Ali',
         age: 3,
         ownerId: seedUsers[1].uid!,
-        speciesId: seedSpecies[1].speciesId!,
+        speciesId: seedSpecies[7].speciesId!,
         petImage: "aligator1.jpeg",
     },
 ];
