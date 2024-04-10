@@ -31,6 +31,28 @@ import {
     tags,
     users
 } from './Schema';
+import path from 'path';
+import fs from 'fs';
+
+
+export const addImage = async (imageName: string) => {
+    try {
+        const imagePath = path.join(__dirname, 'seedImages', imageName);
+        const imgFile = await new Promise<Buffer>((resolve, reject) => {
+            fs.readFile(imagePath, (err, data) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+        return imgFile;
+    } catch (error) {
+        console.error('Error adding image:', error);
+        throw error;
+    }
+};
 
 const seedAccounts: CreateAccount[] = [
     {
@@ -125,36 +147,97 @@ const seedPets: CreatePet[] = [
         name: 'Buddy',
         age: 3,
         ownerId: seedUsers[0].uid!,
-        speciesId: seedSpecies[0].speciesId!
+        speciesId: seedSpecies[0].speciesId!,
+        petImage: "dog1.jpeg",
     },
     {
         petId: uuidv4(),
         name: 'Mittens',
         age: 4,
         ownerId: seedUsers[1].uid!,
-        speciesId: seedSpecies[1].speciesId!
+        speciesId: seedSpecies[1].speciesId!,
+        petImage: "cat1.jpeg",
     },
     {
         petId: uuidv4(),
         name: 'Bugs',
         age: 1,
         ownerId: seedUsers[2].uid!,
-        speciesId: seedSpecies[2].speciesId!
+        speciesId: seedSpecies[2].speciesId!,
+        petImage: "hamster1.jpeg",
     },
     {
         petId: uuidv4(),
         name: 'Polly',
         age: 2,
         ownerId: seedUsers[3].uid!,
-        speciesId: seedSpecies[3].speciesId!
+        speciesId: seedSpecies[3].speciesId!,
+        petImage: "cat2.jpeg",
     },
     {
         petId: uuidv4(),
         name: 'Fluffy',
         age: 1,
         ownerId: seedUsers[1].uid!,
-        speciesId: seedSpecies[4].speciesId!
-    }
+        speciesId: seedSpecies[0].speciesId!,
+        petImage: "dog2.jpeg",
+    },
+    {
+        petId: uuidv4(),
+        name: 'BroBro',
+        age: 2,
+        ownerId: seedUsers[1].uid!,
+        speciesId: seedSpecies[0].speciesId!,
+        petImage: "dog2.jpeg",
+    },
+    {
+        petId: uuidv4(),
+        name: 'Foofy',
+        age: 3,
+        ownerId: seedUsers[1].uid!,
+        speciesId: seedSpecies[0].speciesId!,
+        petImage: "dog3.jpeg",
+    },
+    {
+        petId: uuidv4(),
+        name: 'Chad',
+        age: 3,
+        ownerId: seedUsers[1].uid!,
+        speciesId: seedSpecies[0].speciesId!,
+        petImage: "dog5.jpeg",
+    },
+    {
+        petId: uuidv4(),
+        name: 'Lucky',
+        age: 3,
+        ownerId: seedUsers[1].uid!,
+        speciesId: seedSpecies[0].speciesId!,
+        petImage: "dog6.jpeg",
+    },
+    {
+        petId: uuidv4(),
+        name: 'York',
+        age: 3,
+        ownerId: seedUsers[1].uid!,
+        speciesId: seedSpecies[0].speciesId!,
+        petImage: "dog7.jpeg",
+    },
+    {
+        petId: uuidv4(),
+        name: 'Poodle',
+        age: 3,
+        ownerId: seedUsers[1].uid!,
+        speciesId: seedSpecies[1].speciesId!,
+        petImage: "cat4.jpeg",
+    },
+    {
+        petId: uuidv4(),
+        name: 'Ali',
+        age: 3,
+        ownerId: seedUsers[1].uid!,
+        speciesId: seedSpecies[1].speciesId!,
+        petImage: "aligator1.jpeg",
+    },
 ];
 
 const seedAdoptionPosts: CreateAdoptionPost[] = [
@@ -193,7 +276,70 @@ const seedAdoptionPosts: CreateAdoptionPost[] = [
         userId: seedUsers[1].uid!,
         city: 'Vancouver',
         province: 'BC'
-    }
+    },
+    {
+        adoptPostId: uuidv4(),
+        desc: 'I have a doge',
+        title: 'Doge needs a new home',
+        petId: seedPets[5].petId!,
+        userId: seedUsers[1].uid!,
+        city: 'Vancouver',
+        province: 'BC'
+    },
+    {
+        adoptPostId: uuidv4(),
+        desc: 'Doggy too big',
+        title: 'Doggy needs a new home',
+        petId: seedPets[6].petId!,
+        userId: seedUsers[1].uid!,
+        city: 'Vancouver',
+        province: 'BC'
+    },
+    {
+        adoptPostId: uuidv4(),
+        desc: 'Doggy loves to play, I go to work too much.',
+        title: 'Too much work',
+        petId: seedPets[7].petId!,
+        userId: seedUsers[1].uid!,
+        city: 'Vancouver',
+        province: 'BC'
+    },
+    {
+        adoptPostId: uuidv4(),
+        desc: 'Want big dog',
+        title: 'Small doggy',
+        petId: seedPets[8].petId!,
+        userId: seedUsers[1].uid!,
+        city: 'Vancouver',
+        province: 'BC'
+    },
+    {
+        adoptPostId: uuidv4(),
+        desc: 'Selling cute dog',
+        title: 'Cute Dog For Sale',
+        petId: seedPets[9].petId!,
+        userId: seedUsers[1].uid!,
+        city: 'Vancouver',
+        province: 'BC'
+    },
+    {
+        adoptPostId: uuidv4(),
+        desc: 'Cute cat',
+        title: 'Cute Cat',
+        petId: seedPets[10].petId!,
+        userId: seedUsers[1].uid!,
+        city: 'Burnaby',
+        province: 'BC'
+    },
+    {
+        adoptPostId: uuidv4(),
+        desc: 'Cute Aligator',
+        title: 'Aligator For Sale',
+        petId: seedPets[11].petId!,
+        userId: seedUsers[1].uid!,
+        city: 'Burnaby',
+        province: 'BC'
+    },
 ];
 
 const seedAdoptionRequests: CreateAdoptionRequest[] = [
@@ -451,11 +597,15 @@ db
             ...account,
             password: await bcrypt.hash(account.password, 10)
         }));
+        const seedPetsWithImages = seedPets.map(async (pet,index) => ({
+            ...pet,
+            petImage: await addImage(pet.petImage),
+        }))
         await tx.insert(accounts).values(await Promise.all(seedAccountsHashed));
         
         await tx.insert(users).values(seedUsers);
         await tx.insert(species).values(seedSpecies);
-        await tx.insert(pets).values(seedPets);
+        await tx.insert(pets).values(await Promise.all(seedPetsWithImages));
         await tx.insert(adoptionPosts).values(seedAdoptionPosts);
         await tx.insert(adoptionRequests).values(seedAdoptionRequests);
         await tx.insert(postReviews).values(seedPostReviews);
@@ -467,7 +617,7 @@ db
         await tx.insert(conversations).values(seedConversations);
         await tx.insert(conversationMessages).values(seedConversationMessages);
     })
-    .then(() => {
+    .then(async () => {
         console.log('Seeding complete');
         process.exit(0);
     })
