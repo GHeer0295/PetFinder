@@ -4,6 +4,7 @@ import { FiMessageSquare } from "react-icons/fi";
 import { IconContext } from "react-icons";
 import "./Interests.css"
 import { getUserProfile } from '../../services/profileService';
+import { useNavigate } from 'react-router';
 
 interface PostData {
     postId: string;
@@ -21,6 +22,8 @@ const Interests: React.FC = () => {
     const [interests, setInterests] = useState<PostData[]>([]);
     const [curPost, setCurPost] = useState<PostData | null>(null);
     const [openModal, setOpenModal] = useState(false);
+    let navigate = useNavigate();
+
 
     const getInterestList = async () => {
         const data = await fetch('/api/interests').then(res => res.json());
@@ -60,7 +63,6 @@ const Interests: React.FC = () => {
         const userId = curUser[0].userId!;
 
         try {
-    
             const result: any = await fetch(`/api/post/${postID}`, {
                 method: "GET",
                 headers: {
@@ -73,6 +75,7 @@ const Interests: React.FC = () => {
             }
 
             const data  = await result.json();
+            console.log(data);
 
             const obj = {
                 toUser: data,
@@ -90,6 +93,8 @@ const Interests: React.FC = () => {
             if(!createMessage.ok) {
                 throw new Error("unable to create message");
             }
+
+            navigate("/message");
         } catch(error) {
             console.log(error);
         }
@@ -116,7 +121,7 @@ const Interests: React.FC = () => {
                 <div>
                     <div className='message-button'>
                         <IconContext.Provider value={{ color: "black", size: "35px" }}>
-                            <a href="/message" onClick={handleClick}>
+                            <a onClick={handleClick}>
                                 <div>
                                     <FiMessageSquare />
                                 </div>

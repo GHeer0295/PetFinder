@@ -103,7 +103,7 @@ export const createNewConversationDefaultMessage = async (req: Request, res: Res
     try {
         const resultNewConversation = await db.insert(conversations).values(newConvo);
         const resultNewMessage = await db.insert(conversationMessages).values(defaultConversationMessage);
-        next()
+        res.sendStatus(200);
     } catch(error) {
         console.log(error);
     }
